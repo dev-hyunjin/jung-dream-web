@@ -9,6 +9,10 @@ body {
     height: 100%;
 }
 
+button {
+    cursor: pointer;
+}
+
 h3 {
     text-align: center;
 }
@@ -65,7 +69,7 @@ header h1 {
     color: #ff0000;
     font-size: 12px;
     margin-top: 5px;
-    display: block;
+    display: none;
 }
 
 .receive-information-container {
@@ -82,6 +86,7 @@ header h1 {
 .order-plus-minus img {
     width: 30px;
     height: 30px;
+    cursor: pointer;
 }
 
 .address-container {
@@ -126,7 +131,7 @@ header h1 {
     font-size: 20px;
 }
 
-.count-wrap .inp {
+.count-wrap .input {
     border: 0;
     height: 18px;
     text-align: center;
