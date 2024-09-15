@@ -1,11 +1,38 @@
 $(function() {
 
+    productInfoKinds.forEach(productKind => {
+        $('select[name=kind]').append(`<option value="${productKind.productKind}">${productKind.productKind}</option>`);
+    });
+
+    $(document).on('change', 'select[name=kind]', function() {
+        getProductInfo(this, $(this).val(), null);
+    });
+
+    $(document).on('change', 'select[name=weight]', function() {
+        getProductInfo(this, $(this).closest('.receive-information-container').find('select[name=kind]').val(), $(this).val());
+    });
+
     $(document).on('click', '.find-address', function() {
         kakaoAddress(this);
     });
 
+    $(document).on('click', '#same-person', function() {
+        if($(this).prop('checked')) {
+            $(this).closest('.receive-information-container').find('input[name=receiverName]').val($('input[name=ordererName]').val());
+            $(this).closest('.receive-information-container').find('input[name=receiverPhone]').val($('input[name=ordererPhone]').val());
+        }
+    });
+
     $(document).on('click', '.plus', function() {
         $(this).next().val(parseInt($(this).next().val()) + 1);
+    });
+
+    $(document).on('click', '.minus', function() {
+        if($(this).prev().val() == 1) {
+            return;
+        }
+
+        $(this).prev().val(parseInt($(this).prev().val()) - 1);
     });
 
     $(document).on('click', '.plus-img', function() {
@@ -15,13 +42,22 @@ $(function() {
                 <div class="order-plus-minus">
                     <span>주문</span>
                     <div class="img-container">
-                        <img src="../../static/image/plus.png" class="plus-img" alt="">
-                        <img src="../../static/image/minus.png" class="minus-img" alt="">
+                        <span>주문자 정보와 동일</span><input type="checkbox" name="samePerson" id="same-person">
                     </div>
                 </div>
                 <div class="form-group">
+                    <label>수신자 이름</label>
+                    <input type="text" name="receiverName" placeholder="이름을 입력해주세요">
+                    <span class="error-message">이름을 입력해주세요</span>
+                </div>
+                <div class="form-group">
+                    <label>수신자 전화번호</label>
+                    <input type="text" name="receiverPhone" placeholder="전화번호를 입력해주세요(01012345678)">
+                    <span class="error-message">전화번호를 입력해주세요</span>
+                </div>
+                <div class="form-group">
                     <label>주소</label>
-                    <input type="text" name="mailNumber" class="mail-number" placeholder="우편번호" readonly>
+                    <input type="text" name="postcode" class="postcode" placeholder="우편번호" readonly>
                     <div class="address-container">
                         <input type="text" name="address" placeholder="주소를 찾아주세요" readOnly/>
                         <button type="button" class="find-address">찾기</button>
@@ -31,44 +67,82 @@ $(function() {
                 </div>
                 <div class="form-group">
                     <label>사과 품종</label>
-                    <select name="" id="">
-                        <option value="">부사</option>
+                    <select name="kind" id="kind">
+                        <option value="">품종을 골라주세요</option>
+                        `;
+        productInfoKinds.forEach(productKind => {
+            text += `<option value="${productKind.productKind}">${productKind.productKind}</option>`;
+        });
+        text += `
                     </select>
                 </div>
                 <div class="form-group">
                     <label>사과 kg</label>
-                    <select name="" id="">
-                        <option value="">5kg</option>
-                        <option value="">10kg</option>
+                    <select name="weight" id="weight">
+                        <option value="">kg을 골라주세요</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>사과 호수</label>
-                    <select name="" id="">
-                        <option value="">특</option>
-                        <option value="">1번</option>
-                        <option value="">2번</option>
-                        <option value="">3번</option>
+                    <label>사과 규격</label>
+                    <select name="size" id="size">
+                        <option value="">규격을 골라주세요</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>사과 수량</label>
                     <div class="count-wrap _count">
-                        <button type="button" class="plus">+</button>
-                        <input type="text" class="input" value="1" />
                         <button type="button" class="minus">-</button>
+                        <input type="text" name="amount" class="input" value="1" />
+                        <button type="button" class="plus">+</button>
                     </div>
+                </div>
+                <div class="img-container">
+                    <img src="/image/minus.png" class="minus-img" alt="">
+                    <img src="/image/plus.png" class="plus-img" alt="">
                 </div>
             </div>
             <!-- 주문 반복 끝 -->
         `;
 
         $('.receive-informations').append(text);
+
+        $('.total-count').text(parseInt($('.total-count').text()) + 1);
     });
 
     $(document).on('click', '.minus-img', function() {
         $(this).closest('.receive-information-container').remove();
+
+        $('.total-count').text(parseInt($('.total-count').text()) - 1);
     });
+
+    function getProductInfo(e, productKind, productWeight) {
+        $.ajax({
+            url: "/product-info",
+            type: "post",
+            data: { isFirst : (!productWeight ? 2 : 3), productKind : productKind, productWeight : productWeight},
+            success: function(result) {
+                if(result) {
+                    if(!productWeight) {
+                        const selectBox = $(e).closest('.receive-information-container').find('select[name=weight]');
+
+                        $(e).closest('.receive-information-container').find('select[name=size]').html(`<option value="">규격을 골라주세요</option>`);
+
+                        selectBox.html(`<option value="">kg을 골라주세요</option>`);
+                        result.forEach(data => {
+                            selectBox.append(`<option value="${data.productWeight}">${data.productWeight}</option>`);
+                        });
+                    } else {
+                        const selectBox = $(e).closest('.receive-information-container').find('select[name=size]');
+
+                        selectBox.html(`<option value="">규격을 골라주세요</option>`);
+                        result.forEach(data => {
+                            selectBox.append(`<option value="${data.productSize}">${data.productSize}</option>`);
+                        });
+                    }
+                }
+            }
+        });
+    }
 
     // 카카오 주소 API
     function kakaoAddress(e) {
@@ -111,11 +185,111 @@ $(function() {
                 }
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                $(e).closest('.form-group').find('.mail-number').val(data.zonecode);
+                $(e).closest('.form-group').find('.postcode').val(data.zonecode);
                 $(e).closest('.form-group').find('input[name=address]').val(addr + ' ' + extraAddr);
                 // 커서를 상세주소 필드로 이동한다.
-                $(e).closest('.form-group').find("input[name=addressDetail").focus();
+                $(e).closest('.form-group').find('input[name=addressDetail]').focus();
             }
         }).open();
     }
+
+    /* 등록 버튼 클릭 */
+    $('.submit-button').on('click', () => {
+        if(!$('input[name=ordererName]').val()) {
+            alert('주문자 이름을 입력하세요');
+            $('input[name=ordererName]').focus();
+            return;
+        }
+
+        if(!$('input[name=ordererPhone]').val()) {
+            alert('주문자 전화번호를 입력하세요');
+            $('input[name=ordererPhone]').focus();
+            return;
+        }
+
+        let orderDTOS = [];
+        if($('input[name=receiverName]').length > 0) {
+            for (let i = 0; i < $('input[name=receiverName]').length; i++) {
+                if(!$('input[name=receiverName]').eq(i).val()) {
+                    alert('수신자 이름을 입력하세요');
+                    $('input[name=receiverName]').eq(i).focus();
+                    return;
+                }
+                if (!orderDTOS[i]) {
+                    orderDTOS[i] = {};
+                }
+                orderDTOS[i]["receiverName"] = $('input[name=receiverName]').eq(i).val();
+            }
+        }
+
+        if($('input[name=receiverPhone]').length > 0) {
+            for (let i = 0; i < $('input[name=receiverPhone]').length; i++) {
+                if(!$('input[name=receiverPhone]').eq(i).val()) {
+                    alert('수신자 전화번호를 입력하세요');
+                    $('input[name=receiverPhone]').eq(i).focus();
+                    return;
+                }
+                if (!orderDTOS[i]) {
+                    orderDTOS[i] = {};
+                }
+                orderDTOS[i]["receiverPhone"] = $('input[name=receiverPhone]').eq(i).val();
+            }
+        }
+
+        if($('input[name=address]').length > 0) {
+            for (let i = 0; i < $('input[name=address]').length; i++) {
+                if(!$('input[name=address]').eq(i).val()) {
+                    alert('주소를 찾아주세요');
+                    $('input[name=address]').eq(i).focus();
+                    return;
+                }
+                if (!orderDTOS[i]) {
+                    orderDTOS[i] = {};
+                }
+                orderDTOS[i]["address"] = $('input[name=address]').eq(i).val();
+            }
+        }
+
+        if($('input[name=postcode]').length > 0) {
+            for (let i = 0; i < $('input[name=postcode]').length; i++) {
+                if (!orderDTOS[i]) {
+                    orderDTOS[i] = {};
+                }
+                orderDTOS[i]["postcode"] = $('input[name=postcode]').eq(i).val();
+            }
+        }
+
+        if($('input[name=addressDetail]').length > 0) {
+            for (let i = 0; i < $('input[name=addressDetail]').length; i++) {
+                if(!$('input[name=addressDetail]').eq(i).val()) {
+                    alert('상세주소를 입력하세요');
+                    $('input[name=addressDetail]').eq(i).focus();
+                    return;
+                }
+                if (!orderDTOS[i]) {
+                    orderDTOS[i] = {};
+                }
+                orderDTOS[i]["addressDetail"] = $('input[name=addressDetail]').eq(i).val();
+            }
+        }
+
+        if(!$('input[name=personalInformation]').prop('checked')) {
+            alert('개인정보 제공 동의 체크해주세요');
+            return;
+        }
+        
+        // $.ajax({
+        //     url: "/admins/product/save",
+        //     type: "post",
+        //     contentType: "application/json",
+        //     data: JSON.stringify({
+        //         productVO: productVO,
+        //         productOptionVOS: productOptionVOS,
+        //         productFileVOS: productFileVOS
+        //     }),
+        //     success: function() {
+        //         document.location.reload(true);
+        //     }
+        // });
+    });
 });

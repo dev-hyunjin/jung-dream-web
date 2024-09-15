@@ -19,10 +19,23 @@ h3 {
 
 .container {
     background-color: white;
-    width: 350px;
+    width: 25%;
+    /* width: 350px; */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 600px) {
+    body {
+        background-color: white;
+    }
+
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
 }
 
 header h1 {
@@ -30,6 +43,10 @@ header h1 {
     font-size: 24px;
     margin-bottom: 20px;
     font-weight: bold;
+}
+
+.explain-image {
+    width: 100%;
 }
 
 .signup-form h2 {
@@ -81,9 +98,19 @@ header h1 {
 .order-plus-minus {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-.order-plus-minus img {
+.img-container {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.img-container span {
+    font-size: 15px;
+}
+
+.img-container img {
     width: 30px;
     height: 30px;
     cursor: pointer;
@@ -122,12 +149,12 @@ header h1 {
 }
 
 .count-wrap > button.minus {
-    right: 0;
+    left: 0;
     font-size: 20px;
 }
 
 .count-wrap > button.plus {
-    left: 0;
+    right: 0;
     font-size: 20px;
 }
 
@@ -142,17 +169,13 @@ header h1 {
 .submit-button {
     width: 100%;
     padding: 10px;
-    background-color: #ccc;
+    background-color: #f47677;
     color: white;
     border: none;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
     margin-top: 10px;
-}
-
-.submit-button:hover {
-    background-color: #bbb;
 }
 
 .notice {

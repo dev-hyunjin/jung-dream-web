@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+<!--	<property name="LOG_PATH" value="/device_web/postgres/log" />-->
+<!--	<property name="LOG_PATH" value="D:/www/check/postgres/log" />-->
+	<property name="LOG_PATH" value="/data/log/compare" />
+	<property name="LOG_FILE_NAME" value="compare" />
+	<property name="ERR_LOG_FILE_NAME" value="error_log" />
+
+	<!-- 쿼리 로그를 여러 줄로 표현 -->
+	<property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n" />
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>180</maxHistory>
+		</rollingPolicy>
+	</appender>
+	<!-- 에러의 경우 파일에 로그 처리 -->
+	<appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>error</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+
+		<file>${LOG_PATH}/${ERR_LOG_FILE_NAME}.log</file>
+
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${ERR_LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>180</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<!-- root 레벨 설정 -->
+	<root level="info">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+		<appender-ref ref="ERROR" />
+	</root>
+
+	<!-- 프로필별 쿼리 로그 설정 -->
+	<!--	SQL을 로그로 남기며, Prepared Statement와 관련된 파라미터는 자동으로 변경되어 SQL을 출력합니다.-->
+	<logger name="jdbc.sqlonly" level="off"/>
+	<!--	SQL과 SQL 실행 시간(milliseconds 단위)을 출력합니다.-->
+	<logger name="jdbc.sqltiming" level="debug"/>
+	<!--	ResultSet을 제외한 모든 JDBC 호출 정보를 출력합니다. JDBC 관련 문제를 추적하는 경우를 제외하고는 사용이 권장되지 않습니다-->
+	<logger name="jdbc.audit" level="off"/>
+	<!--	ResultSet을 포함한 모든 JDBC 호출 정보를 출력합니다.-->
+	<logger name="jdbc.resultset" level="off"/>
+	<!--	SQL 조회 결과를 테이블 형태로 출력합니다.-->
+	<logger name="jdbc.resultsettable" level="debug"/>
+	<!--	Connection의 연결과 종료에 관련된 로그를 출력합니다. 커넥션 누수 문제 해결에 도움이 됩니다.-->
+	<logger name="jdbc.connection" level="off"/>
+</configuration>

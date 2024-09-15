@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.jungdreamweb.mapper.JungDreamMapper">
+
+    <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+    <select id="selectProduct" resultType="productInfoDTO">
+        select
+            <choose>
+                <when test='isFirst == 1'>
+                    distinct product_kind
+                </when>
+                <when test='isFirst == 2'>
+                    distinct product_weight
+                </when>
+                <when test='isFirst == 3'>
+                    product_size
+                </when>
+                <otherwise>
+                    product_kind, product_weight, product_size, product_price, product_sold_out
+                </otherwise>
+            </choose>
+        from tbl_product_info
+        where 1=1
+        <if test='productKind != null and productKind != ""'>
+            and product_kind = #{productKind}
+        </if>
+        <if test='productWeight != null and productWeight != ""'>
+            and product_weight = #{productWeight}
+        </if>
+        <if test='productSize != null and productSize != ""'>
+            and product_size = #{productSize}
+        </if>
+        order by
+        <choose>
+            <when test='isFirst == 1'>
+                product_kind asc
+            </when>
+            <when test='isFirst == 2'>
+                product_weight desc
+            </when>
+            <when test='isFirst == 3'>
+                case when product_size like '특%' then 0 else 1 end
+            </when>
+            <otherwise>
+                product_kind asc, product_weight desc, product_price desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+    <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INSERT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+    <insert id="insertOrder">
+        insert into tbl_order(order_id, order_orderer_name, order_orderer_phone, order_date, order_receiver_name, order_receiver_phone,
+                              order_address, order_address_detail, order_postcode, order_kind, order_weight, order_size, order_count, order_price)
+        values(#{orderId}, #{orderOrdererName}, #{orderOrdererPhone}, #{orderDate}, #{orderReceiverName}, #{orderReceiverPhone},
+               #{orderAddress}, #{orderAddressDetail}, #{orderPostcode}, #{orderKind}, #{orderWeight}, #{orderSize}, #{orderCount}, #{orderPrice})
+    </insert>
+
+    <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: UPDATE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+</mapper>

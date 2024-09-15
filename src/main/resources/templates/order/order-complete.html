@@ -4,18 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문 완료</title>
+    <link rel="stylesheet" href="../../static/css/order-complete.css">
 </head>
 <body>
     <div class="container">
-        <div class="comment">
-            주문이 완료되었습니다
-            사과는 수확하는대로 배송 예정입니다
-        </div>
+        <h4 class="comment">
+            주문이 완료되었습니다.<br>
+            사과는 수확하는대로 배송 예정입니다.
+        </h4>
         <div class="pay-information">
-            <span>총 금액 : </span><span>180000원</span>
-            <span>결제계좌 : 농협 302-0627-2628-61 정재하</span>
+            <h2><span>총 금액 : </span><span>180000원</span></h2>
+            <h3><span>입금계좌 : 농협 302-0627-2628-61 정재하</span></h3>
+            <div class="please-comment">
+                <span>입금 부탁드립니다. 감사합니다.</span>
+            </div>
         </div>
-        <a href="" class="">주문 내역 보기</a>
+        <div class="btn-area">
+            <a href="/login" class="history-btn">주문 내역 보기</a>
+            <a href="/" class="main-btn">메인으로 가기</a>
+        </div>
     </div>
 </body>
 </html>

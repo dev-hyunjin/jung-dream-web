@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 내역</title>
+    <link rel="stylesheet" href="/css/order-history.css">
+</head>
+<body>
+    <div id="container">
+        <div class="history-title">
+            <a href="/">메인으로</a>
+            <h1>주문결제 내역</h1>
+        </div>
+        <div class="search-area">
+            <select name="" id="">
+                <option value="">구매자</option>
+                <option value="">정현진</option>
+                <option value="">정재갑</option>
+            </select>
+            <input type="date" name="" id="">~
+            <input type="date" name="" id="">
+            <button type="button" class="search">검색</button>
+            <button type="button" class="excel-download">엑셀 다운로드</button>
+        </div>
+        <table class="history-list">
+            <caption>주문결제 내역 목록</caption>
+            <colgroup>
+                <col width="5%">
+                <col width="8%">
+                <col width="8%">
+                <col width="5%">
+                <col width="8%">
+                <col width="30%">
+                <col width="5%">
+                <col width="5%">
+                <col width="10%">
+                <col width="5%">
+                <col width="10%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th scope="col">구매자</th>
+                    <th scope="col">구매자 전화번호</th>
+                    <th scope="col">주문일</th>
+                    <th scope="col">수령자</th>
+                    <th scope="col">수령자 전화번호</th>
+                    <th scope="col">주소</th>
+                    <th scope="col">품종</th>
+                    <th scope="col">kg</th>
+                    <th scope="col">규격</th>
+                    <th scope="col">수량</th>
+                    <th scope="col">가격</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>정재갑</td>
+                    <td>010-6269-6873</td>
+                    <td>2024-01-01</td>
+                    <td>정현진</td>
+                    <td>010-2287-6873</td>
+                    <td>서울특별시 동작구 상도로15가길 34-3 304호</td>
+                    <td>부사</td>
+                    <td>10kg</td>
+                    <td>특(13~14과)</td>
+                    <td>1</td>
+                    <td><span class="price">120,000</span>원</td>
+                </tr>
+                <tr>
+                    <td>정재갑</td>
+                    <td>010-6269-6873</td>
+                    <td>2024-01-01</td>
+                    <td>정현진</td>
+                    <td>010-2287-6873</td>
+                    <td>서울특별시 동작구 상도로15가길 34-3 304호</td>
+                    <td>부사</td>
+                    <td>10kg</td>
+                    <td>2번(19~21과)</td>
+                    <td>1</td>
+                    <td><span class="price">120,000</span>원</td>
+                </tr>
+                
+                
+                <!-- <tr>
+                    <td colspan="5">+++ 주문내역이 없습니다 +++</td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

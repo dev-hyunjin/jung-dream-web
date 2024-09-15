@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문하기</title>
-    <link rel="stylesheet" href="../../static/css/order.css">
+    <link rel="stylesheet" href="/css/order.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>정드림</h1>
+            <h1>정드림 </h1>
         </header>
         <div class="signup-form">
             <h2>주문하기</h2>
+            <img src="/image/explain.jpg" alt="설명 이미지" class="explain-image">
             <div class="order-information-container">
                 <div class="form-group">
-                    <label>이름</label>
-                    <input type="text" placeholder="이름을 입력해주세요">
+                    <label>주문자 이름</label>
+                    <input type="text" name="ordererName" placeholder="이름을 입력해주세요">
                     <span class="error-message">이름을 입력해주세요</span>
                 </div>
                 <div class="form-group">
-                    <label>전화번호</label>
-                    <input type="text" placeholder="전화번호를 입력해주세요(01012345678)">
+                    <label>주문자 전화번호</label>
+                    <input type="text" name="ordererPhone" placeholder="전화번호를 입력해주세요(01012345678)">
                     <span class="error-message">전화번호를 입력해주세요</span>
                 </div>
             </div>
@@ -31,12 +32,22 @@
                     <div class="order-plus-minus">
                         <span>주문</span>
                         <div class="img-container">
-                            <img src="../../static/image/plus.png" class="plus-img" alt="">
+                            <span>주문자 정보와 동일</span><input type="checkbox" name="samePerson" id="same-person">
                         </div>
                     </div>
                     <div class="form-group">
+                        <label>수신자 이름</label>
+                        <input type="text" name="receiverName" placeholder="이름을 입력해주세요">
+                        <span class="error-message">이름을 입력해주세요</span>
+                    </div>
+                    <div class="form-group">
+                        <label>수신자 전화번호</label>
+                        <input type="text" name="receiverPhone" placeholder="전화번호를 입력해주세요(01012345678)">
+                        <span class="error-message">전화번호를 입력해주세요</span>
+                    </div>
+                    <div class="form-group">
                         <label>주소</label>
-                        <input type="text" name="mailNumber" class="mail-number" placeholder="우편번호" readonly>
+                        <input type="text" name="postcode" class="postcode" placeholder="우편번호" readonly>
                         <div class="address-container">
                             <input type="text" name="address" placeholder="주소를 찾아주세요" readOnly/>
                             <button type="button" class="find-address">찾기</button>
@@ -46,47 +57,50 @@
                     </div>
                     <div class="form-group">
                         <label>사과 품종</label>
-                        <select name="" id="">
-                            <option value="">부사</option>
+                        <select name="kind" id="kind">
+                            <option value="">품종을 골라주세요</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>사과 kg</label>
-                        <select name="" id="">
-                            <option value="">5kg</option>
-                            <option value="">10kg</option>
+                        <select name="weight" id="weight">
+                            <option value="">kg을 골라주세요</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>사과 호수</label>
-                        <select name="" id="">
-                            <option value="">특</option>
-                            <option value="">1번</option>
-                            <option value="">2번</option>
-                            <option value="">3번</option>
+                        <label>사과 규격</label>
+                        <select name="size" id="size">
+                            <option value="">규격을 골라주세요</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>사과 수량</label>
                         <div class="count-wrap _count">
                             <button type="button" class="plus">+</button>
-                            <input type="text" class="input" value="1" />
+                            <input type="text" name="amount" class="input" value="1" />
                             <button type="button" class="minus">-</button>
                         </div>
+                    </div>
+                    <div class="img-container">
+                        <img src="/image/plus.png" class="plus-img" alt="">
                     </div>
                 </div>
                 <!-- 주문 반복 끝 -->
             </div>
             <div class="form-group">
-                <h3>주문 총 3개</h3>
-                <span>총 가격 : <span>180000</span> 원</span>
+                <h3>주문 총 <span class="total-count">1</span>개</h3>
+                <!-- <span>총 가격 : <span>180000</span> 원</span> -->
             </div>
-            <input type="checkbox" name="" id=""><span>개인정보 제공에 동의합니다</span>
+            <input type="checkbox" name="personalInformation" id="personal-information"><span>개인정보 제공에 동의합니다</span>
             <button type="button" class="submit-button">제출하기</button>
         </div>
     </div>
 </body>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script src="../../static/js/order.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
+<script src="/js/plugins/jquery-3.6.0.min.js"></script>
+<script th:inline="javascript">
+    let productInfoKinds = [[${productInfoKinds}]];
+</script>
+<script src="/js/order.js"></script>
 </html>
