@@ -1,7 +1,14 @@
 $(function() {
 
     productInfoKinds.forEach(productKind => {
-        $('select[name=kind]').append(`<option value="${productKind.productKind}">${productKind.productKind}</option>`);
+        let text = `<option value="${productKind.productKind}"`
+            + (productKind.productSoldOut == 'Y' ? `disabled` : ``) +
+        `>${productKind.productKind}` + (productKind.productSoldOut == 'Y' ? `(품절)` : ``) + `</option>`;
+        $('select[name=kind]').append(text);
+    });
+
+    $(document).on('keyup', 'input[name=ordererPhone], input[name=receiverPhone]', function() {
+        $(this).val($(this).val().replace(/[^0-9]/gi, "").replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
     });
 
     $(document).on('change', 'select[name=kind]', function() {
@@ -24,15 +31,15 @@ $(function() {
     });
 
     $(document).on('click', '.plus', function() {
-        $(this).next().val(parseInt($(this).next().val()) + 1);
+        $(this).prev().val(parseInt($(this).prev().val()) + 1);
     });
 
     $(document).on('click', '.minus', function() {
-        if($(this).prev().val() == 1) {
+        if($(this).next().val() == 1) {
             return;
         }
 
-        $(this).prev().val(parseInt($(this).prev().val()) - 1);
+        $(this).next().val(parseInt($(this).next().val()) - 1);
     });
 
     $(document).on('click', '.plus-img', function() {
@@ -52,7 +59,7 @@ $(function() {
                 </div>
                 <div class="form-group">
                     <label>수신자 전화번호</label>
-                    <input type="text" name="receiverPhone" placeholder="전화번호를 입력해주세요(01012345678)">
+                    <input type="text" name="receiverPhone" placeholder="전화번호를 입력해주세요">
                     <span class="error-message">전화번호를 입력해주세요</span>
                 </div>
                 <div class="form-group">
@@ -71,7 +78,9 @@ $(function() {
                         <option value="">품종을 골라주세요</option>
                         `;
         productInfoKinds.forEach(productKind => {
-            text += `<option value="${productKind.productKind}">${productKind.productKind}</option>`;
+            text += `<option value="${productKind.productKind}"`
+                + (productKind.productSoldOut == 'Y' ? `disabled` : ``) +
+                `>${productKind.productKind}` + (productKind.productSoldOut == 'Y' ? `(품절)` : ``) + `</option>`;
         });
         text += `
                     </select>
@@ -79,7 +88,7 @@ $(function() {
                 <div class="form-group">
                     <label>사과 kg</label>
                     <select name="weight" id="weight">
-                        <option value="">kg을 골라주세요</option>
+                        <option value="">키로수를 골라주세요</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -97,8 +106,10 @@ $(function() {
                     </div>
                 </div>
                 <div class="img-container">
-                    <img src="/image/minus.png" class="minus-img" alt="">
-                    <img src="/image/plus.png" class="plus-img" alt="">
+<!--                    <img src="/image/minus.png" class="minus-img" alt="">-->
+<!--                    <img src="/image/plus.png" class="plus-img" alt="">-->
+                    <span class="minus-img">주문삭제</span>
+                    <span class="plus-img">주문추가</span>
                 </div>
             </div>
             <!-- 주문 반복 끝 -->
@@ -128,15 +139,22 @@ $(function() {
                         $(e).closest('.receive-information-container').find('select[name=size]').html(`<option value="">규격을 골라주세요</option>`);
 
                         selectBox.html(`<option value="">kg을 골라주세요</option>`);
+
                         result.forEach(data => {
-                            selectBox.append(`<option value="${data.productWeight}">${data.productWeight}</option>`);
+                            let text = `<option value="${data.productWeight}"`
+                                + (data.productSoldOut == 'Y' ? `disabled` : ``) +
+                                `>${data.productWeight}` + (data.productSoldOut == 'Y' ? `(품절)` : ``) + `</option>`;
+                            selectBox.append(text);
                         });
                     } else {
                         const selectBox = $(e).closest('.receive-information-container').find('select[name=size]');
 
                         selectBox.html(`<option value="">규격을 골라주세요</option>`);
                         result.forEach(data => {
-                            selectBox.append(`<option value="${data.productSize}">${data.productSize}</option>`);
+                            let text = `<option value="${data.productSize}"`
+                                + (data.productSoldOut == 'Y' ? `disabled` : ``) +
+                                `>${data.productSize}` + (data.productSoldOut == 'Y' ? `(품절)` : ``) + `</option>`;
+                            selectBox.append(text);
                         });
                     }
                 }
@@ -218,7 +236,7 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["receiverName"] = $('input[name=receiverName]').eq(i).val();
+                orderDTOS[i]["orderReceiverName"] = $('input[name=receiverName]').eq(i).val();
             }
         }
 
@@ -232,7 +250,7 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["receiverPhone"] = $('input[name=receiverPhone]').eq(i).val();
+                orderDTOS[i]["orderReceiverPhone"] = $('input[name=receiverPhone]').eq(i).val();
             }
         }
 
@@ -246,7 +264,7 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["address"] = $('input[name=address]').eq(i).val();
+                orderDTOS[i]["orderAddress"] = $('input[name=address]').eq(i).val();
             }
         }
 
@@ -255,7 +273,7 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["postcode"] = $('input[name=postcode]').eq(i).val();
+                orderDTOS[i]["orderPostcode"] = $('input[name=postcode]').eq(i).val();
             }
         }
 
@@ -269,7 +287,58 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["addressDetail"] = $('input[name=addressDetail]').eq(i).val();
+                orderDTOS[i]["orderAddressDetail"] = $('input[name=addressDetail]').eq(i).val();
+            }
+        }
+
+        if($('select[name=kind]').length > 0) {
+            for (let i = 0; i < $('select[name=kind]').length; i++) {
+                if(!$('select[name=kind]').eq(i).val()) {
+                    alert('품종을 골라주세요');
+                    $('select[name=kind]').eq(i).focus();
+                    return;
+                }
+                if (!orderDTOS[i]) {
+                    orderDTOS[i] = {};
+                }
+                orderDTOS[i]["orderKind"] = $('select[name=kind]').eq(i).val();
+            }
+        }
+
+        if($('select[name=weight]').length > 0) {
+            for (let i = 0; i < $('select[name=weight]').length; i++) {
+                if(!$('select[name=weight]').eq(i).val()) {
+                    alert('키로수를 골라주세요');
+                    $('select[name=weight]').eq(i).focus();
+                    return;
+                }
+                if (!orderDTOS[i]) {
+                    orderDTOS[i] = {};
+                }
+                orderDTOS[i]["orderWeight"] = $('select[name=weight]').eq(i).val();
+            }
+        }
+
+        if($('select[name=size]').length > 0) {
+            for (let i = 0; i < $('select[name=size]').length; i++) {
+                if(!$('select[name=size]').eq(i).val()) {
+                    alert('규격을 골라주세요');
+                    $('select[name=size]').eq(i).focus();
+                    return;
+                }
+                if (!orderDTOS[i]) {
+                    orderDTOS[i] = {};
+                }
+                orderDTOS[i]["orderSize"] = $('select[name=size]').eq(i).val();
+            }
+        }
+
+        if($('input[name=amount]').length > 0) {
+            for (let i = 0; i < $('input[name=amount]').length; i++) {
+                if (!orderDTOS[i]) {
+                    orderDTOS[i] = {};
+                }
+                orderDTOS[i]["orderCount"] = $('input[name=amount]').eq(i).val();
             }
         }
 
@@ -277,19 +346,39 @@ $(function() {
             alert('개인정보 제공 동의 체크해주세요');
             return;
         }
+
+        for (let i = 0; i < orderDTOS.length; i++) {
+            orderDTOS[i]["orderOrdererName"] = $('input[name=ordererName]').val();
+            orderDTOS[i]["orderOrdererPhone"] = $('input[name=ordererPhone]').val();
+        }
         
-        // $.ajax({
-        //     url: "/admins/product/save",
-        //     type: "post",
-        //     contentType: "application/json",
-        //     data: JSON.stringify({
-        //         productVO: productVO,
-        //         productOptionVOS: productOptionVOS,
-        //         productFileVOS: productFileVOS
-        //     }),
-        //     success: function() {
-        //         document.location.reload(true);
-        //     }
-        // });
+        $.ajax({
+            url: "/order",
+            type: "post",
+            contentType: "application/json",
+            data: JSON.stringify(orderDTOS),
+            success: function(result) {
+                if(result) {
+                    alert('주문이 완료되었습니다');
+
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '/order-complete';
+
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'totalPrice';
+                    input.value = result;
+                    form.appendChild(input);
+
+                    // Form을 문서에 추가하고 제출
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
     });
 });

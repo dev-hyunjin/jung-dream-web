@@ -18,6 +18,7 @@ public class OrderDTO {
     public String orderKind;
     public String orderWeight;
     public String orderSize;
-    public String orderCount;
-    public String orderPrice;
+    public Integer orderCount;
+    public Integer orderPrice;
+    public Integer orderGroupId;
 }

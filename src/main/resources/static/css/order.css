@@ -104,6 +104,7 @@ header h1 {
 .img-container {
     display: flex;
     flex-direction: row-reverse;
+    gap: 5px;
 }
 
 .img-container span {
@@ -114,6 +115,12 @@ header h1 {
     width: 30px;
     height: 30px;
     cursor: pointer;
+}
+
+.plus-img, .minus-img {
+    cursor: pointer;
+    border: solid 1px black;
+    border-radius: 3px;
 }
 
 .address-container {

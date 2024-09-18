@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group">
                     <label>주문자 전화번호</label>
-                    <input type="text" name="ordererPhone" placeholder="전화번호를 입력해주세요(01012345678)">
+                    <input type="text" name="ordererPhone" placeholder="전화번호를 입력해주세요" maxlength="13">
                     <span class="error-message">전화번호를 입력해주세요</span>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="form-group">
                         <label>수신자 전화번호</label>
-                        <input type="text" name="receiverPhone" placeholder="전화번호를 입력해주세요(01012345678)">
+                        <input type="text" name="receiverPhone" placeholder="전화번호를 입력해주세요" maxlength="13">
                         <span class="error-message">전화번호를 입력해주세요</span>
                     </div>
                     <div class="form-group">
@@ -76,19 +76,20 @@
                     <div class="form-group">
                         <label>사과 수량</label>
                         <div class="count-wrap _count">
-                            <button type="button" class="plus">+</button>
-                            <input type="text" name="amount" class="input" value="1" />
                             <button type="button" class="minus">-</button>
+                            <input type="text" name="amount" class="input" value="1" />
+                            <button type="button" class="plus">+</button>
                         </div>
                     </div>
                     <div class="img-container">
-                        <img src="/image/plus.png" class="plus-img" alt="">
+<!--                        <img src="/image/plus.png" class="plus-img" alt="">-->
+                        <span class="plus-img">주문추가</span>
                     </div>
                 </div>
                 <!-- 주문 반복 끝 -->
             </div>
             <div class="form-group">
-                <h3>주문 총 <span class="total-count">1</span>개</h3>
+                <h3>주문 총 <span class="total-count">1</span>건</h3>
                 <!-- <span>총 가격 : <span>180000</span> 원</span> -->
             </div>
             <input type="checkbox" name="personalInformation" id="personal-information"><span>개인정보 제공에 동의합니다</span>

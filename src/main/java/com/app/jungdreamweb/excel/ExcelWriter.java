@@ -152,18 +152,75 @@ public class ExcelWriter {
 //    }
 
     /* 행 생성(Body : 넓이 자동 조절없음, 생성시간 짧음) */
+//    private void createBodyRow(Sheet sheet, List<String> cellList, int rowNum) {
+//        int size = cellList.size();
+//        Row row = sheet.createRow(rowNum);
+//        // 스타일 생성
+//        CellStyle style = getOrCreateStyle("defaultStyle", false); // 스타일 재사용
+//
+//        for (int i = 0; i < size; i++) {
+//            Cell cell = row.createCell(i);
+//            cell.setCellValue(cellList.get(i));
+//            cell.setCellStyle(style);
+//        }
+//    }
+
     private void createBodyRow(Sheet sheet, List<String> cellList, int rowNum) {
         int size = cellList.size();
         Row row = sheet.createRow(rowNum);
-        // 스타일 생성
-        CellStyle style = getOrCreateStyle("defaultStyle", false); // 스타일 재사용
+        CellStyle defaultStyle = getOrCreateStyle("defaultStyle", false); // 기본 스타일 재사용
+        CellStyle numberStyle = getOrCreateNumberStyle("numberStyle"); // 숫자 스타일 생성
+        CellStyle currencyStyle = getOrCreateCurrencyStyle("currencyStyle"); // 통화 스타일 생성
 
         for (int i = 0; i < size; i++) {
             Cell cell = row.createCell(i);
-            cell.setCellValue(cellList.get(i));
-            cell.setCellStyle(style);
+            if (i == 9 || i == 10) { // 10번째와 11번째 열 (0부터 시작하는 인덱스)
+                cell.setCellValue(Double.parseDouble(cellList.get(i)));
+                cell.setCellStyle(numberStyle);
+            } else if (i == 11) { // 12번째 열
+                cell.setCellValue(Double.parseDouble(cellList.get(i)));
+                cell.setCellStyle(currencyStyle);
+            } else {
+                cell.setCellValue(cellList.get(i));
+                cell.setCellStyle(defaultStyle);
+            }
         }
     }
+
+    // 숫자 스타일 생성 (테두리 포함)
+    private CellStyle getOrCreateNumberStyle(String styleKey) {
+        if (!styleCache.containsKey(styleKey)) {
+            CellStyle style = workbook.createCellStyle();
+            DataFormat format = workbook.createDataFormat();
+            style.setDataFormat(format.getFormat("0")); // 숫자 형식
+            // 테두리 설정
+            style.setBorderTop(BorderStyle.THIN);
+            style.setBorderBottom(BorderStyle.THIN);
+            style.setBorderLeft(BorderStyle.THIN);
+            style.setBorderRight(BorderStyle.THIN);
+            styleCache.put(styleKey, style);
+        }
+        return styleCache.get(styleKey);
+    }
+
+    // 통화 스타일 생성 (테두리 포함)
+    private CellStyle getOrCreateCurrencyStyle(String styleKey) {
+        if (!styleCache.containsKey(styleKey)) {
+            CellStyle style = workbook.createCellStyle();
+            DataFormat format = workbook.createDataFormat();
+            style.setDataFormat(format.getFormat("#,###")); // 통화 형식
+            // 테두리 설정
+            style.setBorderTop(BorderStyle.THIN);
+            style.setBorderBottom(BorderStyle.THIN);
+            style.setBorderLeft(BorderStyle.THIN);
+            style.setBorderRight(BorderStyle.THIN);
+            styleCache.put(styleKey, style);
+        }
+        return styleCache.get(styleKey);
+    }
+
+
+
 
     /* 행 생성(Head) */
     private void createHeadRow(Sheet sheet, List<String> cellList, int rowNum) {

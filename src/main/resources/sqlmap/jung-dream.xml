@@ -4,22 +4,42 @@
 <mapper namespace="com.app.jungdreamweb.mapper.JungDreamMapper">
 
     <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
     <select id="selectProduct" resultType="productInfoDTO">
         select
-            <choose>
-                <when test='isFirst == 1'>
-                    distinct product_kind
-                </when>
-                <when test='isFirst == 2'>
-                    distinct product_weight
-                </when>
-                <when test='isFirst == 3'>
-                    product_size
-                </when>
-                <otherwise>
-                    product_kind, product_weight, product_size, product_price, product_sold_out
-                </otherwise>
-            </choose>
+        <choose>
+            <when test='isFirst == 1'>
+                distinct product_kind,
+                case
+                    when exists (
+                        select 1
+                        from tbl_product_info as sub
+                        where sub.product_kind = tbl_product_info.product_kind
+                        and sub.product_sold_out = 'N'
+                    ) then 'N'
+                    else 'Y'
+                end as product_sold_out
+            </when>
+            <when test='isFirst == 2'>
+                distinct product_weight,
+                case
+                    when exists (
+                        select 1
+                        from tbl_product_info as sub
+                        where sub.product_weight = tbl_product_info.product_weight
+                        and sub.product_sold_out = 'N'
+                    ) then 'N'
+                    else 'Y'
+                end as product_sold_out
+            </when>
+            <when test='isFirst == 3'>
+                product_size, product_sold_out
+            </when>
+            <otherwise>
+                product_kind, product_weight, product_size, product_price, product_sold_out
+            </otherwise>
+        </choose>
         from tbl_product_info
         where 1=1
         <if test='productKind != null and productKind != ""'>
@@ -48,14 +68,38 @@
         </choose>
     </select>
 
-    <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+    <select id="selectOrderCount" resultType="int">
+        select count(order_id)
+        from tbl_order
+        where to_char(order_date, 'yyyy-mm-dd') between #{startDate} and #{endDate}
+            and order_orderer_name = #{ordererName} and order_orderer_phone = #{ordererPhone}
+    </select>
+
+    <select id="selectOrderList" resultType="orderDTO">
+        select order_id, order_orderer_name, order_orderer_phone, to_char(order_date, 'yyyy-mm-dd') as order_date, order_receiver_name, order_receiver_phone,
+               order_address, order_address_detail, order_postcode, order_kind, order_weight, order_size, order_count, order_price, order_group_id
+        from tbl_order
+        where to_char(order_date, 'yyyy-mm-dd') between #{startDate} and #{endDate}
+        <if test='ordererName != null and ordererName != ""'>
+            and order_orderer_name = #{ordererName}
+        </if>
+        <if test='ordererPhone != null and ordererPhone != ""'>
+            and order_orderer_phone = #{ordererPhone}
+        </if>
+        order by order_group_id desc, order_id asc
+    </select>
+
+    <!-- 시퀀스 값을 증가시키는 쿼리 -->
+    <select id="getNextSequenceValue" resultType="int">
+        select nextval('seq_order_group')
+    </select>
 
     <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INSERT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
     <insert id="insertOrder">
-        insert into tbl_order(order_id, order_orderer_name, order_orderer_phone, order_date, order_receiver_name, order_receiver_phone,
-                              order_address, order_address_detail, order_postcode, order_kind, order_weight, order_size, order_count, order_price)
-        values(#{orderId}, #{orderOrdererName}, #{orderOrdererPhone}, #{orderDate}, #{orderReceiverName}, #{orderReceiverPhone},
-               #{orderAddress}, #{orderAddressDetail}, #{orderPostcode}, #{orderKind}, #{orderWeight}, #{orderSize}, #{orderCount}, #{orderPrice})
+        insert into tbl_order(order_orderer_name, order_orderer_phone, order_date, order_receiver_name, order_receiver_phone, order_address,
+                              order_address_detail, order_postcode, order_kind, order_weight, order_size, order_count, order_price, order_group_id)
+        values(#{orderOrdererName}, #{orderOrdererPhone}, current_timestamp, #{orderReceiverName}, #{orderReceiverPhone}, #{orderAddress},
+               #{orderAddressDetail}, #{orderPostcode}, #{orderKind}, #{orderWeight}, #{orderSize}, #{orderCount}, #{orderPrice}, currval('seq_order_group'))
     </insert>
 
     <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: UPDATE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
