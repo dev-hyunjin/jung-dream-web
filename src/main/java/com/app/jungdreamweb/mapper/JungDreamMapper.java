@@ -15,7 +15,11 @@ public interface JungDreamMapper {
 
     public List<OrderDTO> selectOrderList(String startDate, String endDate, String ordererName, String ordererPhone);
 
+    public OrderDTO selectOrder(Integer orderId);
+
     public void getNextSequenceValue();
 
     public void insertOrder(OrderDTO orderDTO);
+
+    public void updateOrder(OrderDTO orderDTO);
 }

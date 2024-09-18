@@ -23,6 +23,11 @@ public class JungDreamRestController {
         return jungDreamService.getProductInfo(isFirst, productKind, productWeight, null);
     }
 
+    @PostMapping("/get-order")
+    public OrderDTO getOrder(Integer orderId) {
+        return jungDreamService.getOrder(orderId);
+    }
+
     @PostMapping("/order")
     public Integer order(@RequestBody List<OrderDTO> orderDTOS) {
         return jungDreamService.insertOrder(orderDTOS);

@@ -89,6 +89,13 @@
         order by order_group_id desc, order_id asc
     </select>
 
+    <select id="selectOrder" resultType="orderDTO">
+        select order_id, order_orderer_name, order_orderer_phone, to_char(order_date, 'yyyy-mm-dd') as order_date, order_receiver_name, order_receiver_phone,
+               order_address, order_address_detail, order_postcode, order_kind, order_weight, order_size, order_count, order_price, order_group_id
+        from tbl_order
+        where order_id = #{orderId}
+    </select>
+
     <!-- 시퀀스 값을 증가시키는 쿼리 -->
     <select id="getNextSequenceValue" resultType="int">
         select nextval('seq_order_group')
@@ -103,5 +110,47 @@
     </insert>
 
     <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: UPDATE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+    <update id="updateOrder" parameterType="orderDTO">
+        update tbl_order
+        <set>
+            <if test='orderOrdererName != null and orderOrdererName != ""'>
+                order_orderer_name = #{orderOrdererName},
+            </if>
+            <if test='orderOrdererPhone != null and orderOrdererPhone != ""'>
+                order_orderer_phone = #{orderOrdererPhone},
+            </if>
+            <if test='orderReceiverName != null and orderReceiverName != ""'>
+                order_receiver_name = #{orderReceiverName},
+            </if>
+            <if test='orderReceiverPhone != null and orderReceiverPhone != ""'>
+                order_receiver_phone = #{orderReceiverPhone},
+            </if>
+            <if test='orderAddress != null and orderAddress != ""'>
+                order_address = #{orderAddress},
+            </if>
+            <if test='orderAddressDetail != null and orderAddressDetail != ""'>
+                order_address_detail = #{orderAddressDetail},
+            </if>
+            <if test='orderPostcode != null and orderPostcode != ""'>
+                order_postcode = #{orderPostcode},
+            </if>
+            <if test='orderKind != null and orderKind != ""'>
+                order_kind = #{orderKind},
+            </if>
+            <if test='orderWeight != null and orderWeight != ""'>
+                order_weight = #{orderWeight},
+            </if>
+            <if test='orderSize != null and orderSize != ""'>
+                order_size = #{orderSize},
+            </if>
+            <if test='orderCount != null and orderCount != ""'>
+                order_count = #{orderCount},
+            </if>
+            <if test='orderPrice != null and orderPrice != ""'>
+                order_price = #{orderPrice},
+            </if>
+        </set>
+        where order_id = #{orderId}
+    </update>
 
 </mapper>

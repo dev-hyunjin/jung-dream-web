@@ -29,6 +29,10 @@ public class JungDreamService {
         return jungDreamMapper.selectOrderList(startDate, endDate, ordererName, ordererPhone);
     }
 
+    public OrderDTO getOrder(Integer orderId) {
+        return jungDreamMapper.selectOrder(orderId);
+    }
+
     public Integer insertOrder(List<OrderDTO> orderDTOS) {
         Integer totalPrice = 0;
 

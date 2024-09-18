@@ -37,6 +37,7 @@ $(function() {
 
         let text = `
             <tr>
+                <input type="hidden" name="orderId" value="${order.orderId}">
                 <td>${order.orderGroupId}</td>
                 <td>${order.orderOrdererName}</td>
                 <td>${order.orderOrdererPhone}</td>
