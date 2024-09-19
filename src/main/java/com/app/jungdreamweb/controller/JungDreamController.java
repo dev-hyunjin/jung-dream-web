@@ -109,8 +109,10 @@ public class JungDreamController {
         }
 
         List<OrderDTO> orderList = jungDreamService.getOrderList(startDate, endDate, ordererName, ordererPhone);
+        List<ProductInfoDTO> productInfoKinds = jungDreamService.getProductInfo(1, null, null, null);
 
         model.addAttribute("orderList", orderList);
+        model.addAttribute("productInfoKinds", productInfoKinds);
 
         return "history/order-history";
     }

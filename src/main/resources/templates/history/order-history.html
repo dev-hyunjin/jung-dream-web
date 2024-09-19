@@ -72,6 +72,7 @@
                     <div class="signup-form">
                         <h2>수정하기</h2>
                         <div class="order-information-container">
+                            <input type="hidden" name="orderId">
                             <div class="form-group">
                                 <label>주문자 이름</label>
                                 <input type="text" name="ordererName" placeholder="이름을 입력해주세요">
@@ -152,6 +153,7 @@
 <script src="/js/plugins/jquery-3.6.0.min.js"></script>
 <script th:inline="javascript">
     let orderList = [[${orderList}]];
+    let productInfoKinds = [[${productInfoKinds}]];
 </script>
 <script src="/js/order-history.js"></script>
 <script src="/js/modal-update.js"></script>

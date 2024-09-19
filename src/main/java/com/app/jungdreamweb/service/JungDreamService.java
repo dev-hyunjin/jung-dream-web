@@ -49,6 +49,13 @@ public class JungDreamService {
         return totalPrice;
     }
 
+    public void updateOrder(OrderDTO orderDTO) {
+        List<ProductInfoDTO> productInfoDTOS = jungDreamMapper.selectProduct(null, orderDTO.getOrderKind(), orderDTO.orderWeight, orderDTO.getOrderSize());
+        orderDTO.setOrderPrice(productInfoDTOS.get(0).productPrice * orderDTO.orderCount);
+
+        jungDreamMapper.updateOrder(orderDTO);
+    }
+
     public Map<String, Object> excelDownload(String startDate, String endDate, String ordererName, String ordererPhone) throws Exception {
 
         List<String> headList = null;				// 엑셀 해더

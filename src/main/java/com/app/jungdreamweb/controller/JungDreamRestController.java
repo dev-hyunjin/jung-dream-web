@@ -32,4 +32,9 @@ public class JungDreamRestController {
     public Integer order(@RequestBody List<OrderDTO> orderDTOS) {
         return jungDreamService.insertOrder(orderDTOS);
     }
+
+    @PostMapping("/order-update")
+    public void orderUpdate(@RequestBody OrderDTO orderDTO) {
+        jungDreamService.updateOrder(orderDTO);
+    }
 }
