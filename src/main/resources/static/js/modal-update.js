@@ -7,7 +7,11 @@ $(function() {
         $('select[name=kind]').append(text);
     });
 
-    $(document).on('keyup', 'input[name=ordererPhone], input[name=receiverPhone]', function() {
+    $(document).on('click', '.close-container span', function() {
+        $('.modal').hide();
+    });
+
+    $(document).on('keyup', 'input[name=ordererPhone], input[name=receiverPhone], input[name=deliveryPhone]', function() {
         $(this).val($(this).val().replace(/[^0-9]/gi, "").replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
     });
 
@@ -79,7 +83,11 @@ $(function() {
         });
     }
 
-    $('tbody tr').on('click', function() {
+    $('tbody tr').on('click', function(e) {
+        if ($(e.target).closest('.order-cancel').length > 0) {
+            return;
+        }
+
         $.ajax({
             url: "/get-order",
             type: "post",
@@ -90,6 +98,14 @@ $(function() {
                     $('input[name=orderId]').val(result.orderId);
                     $('input[name=ordererName]').val(result.orderOrdererName);
                     $('input[name=ordererPhone]').val(result.orderOrdererPhone);
+
+                    if(result.orderDeliveryName && result.orderDeliveryPhone) {
+                        $('input[name=deliveryName]').val(result.orderDeliveryName);
+                        $('input[name=deliveryPhone]').val(result.orderDeliveryPhone);
+                    } else {
+                        $('.delivery-container').empty();
+                    }
+
                     $('input[name=receiverName]').val(result.orderReceiverName);
                     $('input[name=receiverPhone]').val(result.orderReceiverPhone);
                     $('input[name=postcode]').val(result.orderPostcode);
@@ -179,6 +195,29 @@ $(function() {
         }
 
         let orderDTOS = [];
+
+        if($('input[name=deliveryName]').length > 0) {
+            for (let i = 0; i < $('input[name=deliveryName]').length; i++) {
+                if (!orderDTOS[i]) {
+                    orderDTOS[i] = {};
+                }
+
+                let deliveryName = ($('input[name=deliveryName]').eq(i).val() ? $('input[name=deliveryName]').eq(i).val() : '정재하');
+                orderDTOS[i]["orderDeliveryName"] = deliveryName.trim();
+            }
+        }
+
+        if($('input[name=deliveryPhone]').length > 0) {
+            for (let i = 0; i < $('input[name=deliveryPhone]').length; i++) {
+                if (!orderDTOS[i]) {
+                    orderDTOS[i] = {};
+                }
+
+                let deliveryPhone = ($('input[name=deliveryPhone]').eq(i).val() ? $('input[name=deliveryPhone]').eq(i).val() : '010-4532-4350');
+                orderDTOS[i]["orderDeliveryPhone"] = deliveryPhone.trim();
+            }
+        }
+
         if($('input[name=receiverName]').length > 0) {
             for (let i = 0; i < $('input[name=receiverName]').length; i++) {
                 if(!$('input[name=receiverName]').eq(i).val()) {
@@ -308,6 +347,26 @@ $(function() {
             data: JSON.stringify(orderDTOS[0]),
             success: function() {
                 alert('수정이 완료되었습니다');
+
+                location.reload();
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    });
+
+    $(document).on('click', '.order-cancel', function() {
+        if(!confirm('이미 입금을 하신분들은 주문 취소 전 먼저 위 번호로 문의 바랍니다.\n정말로 주문을 취소하시겠습니까?')) {
+            return;
+        }
+
+        $.ajax({
+            url: "/order-delete",
+            type: "post",
+            data: { orderId : $(this).closest('tr').find('input[name=orderId]').val() },
+            success: function() {
+                alert('주문이 취소되었습니다');
 
                 location.reload();
             },

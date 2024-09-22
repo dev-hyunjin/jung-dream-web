@@ -13,17 +13,22 @@
         </header>
         <div class="signup-form">
             <h2>주문하기</h2>
-            <img src="/image/explain.jpg" alt="설명 이미지" class="explain-image">
+            <img src="/image/홍보전단(홍로)001.bmp" alt="설명 이미지" class="explain-image">
             <div class="order-information-container">
                 <div class="form-group">
                     <label>주문자 이름</label>
-                    <input type="text" name="ordererName" placeholder="이름을 입력해주세요">
+                    <input type="text" name="ordererName" placeholder="이름을 입력해주세요" maxlength="5">
                     <span class="error-message">이름을 입력해주세요</span>
                 </div>
                 <div class="form-group">
                     <label>주문자 전화번호</label>
                     <input type="text" name="ordererPhone" placeholder="전화번호를 입력해주세요" maxlength="13">
                     <span class="error-message">전화번호를 입력해주세요</span>
+                </div>
+                <div class="form-group">
+                    <label>비밀번호(주문 확인용)</label>
+                    <input type="password" name="orderPassword" placeholder="비밀번호(숫자6자리)를 입력해주세요" maxlength="6">
+                    <span class="error-message">비밀번호(숫자6자리)를 입력해주세요</span>
                 </div>
             </div>
             <div class="receive-informations">
@@ -35,13 +40,17 @@
                             <span>주문자 정보와 동일</span><input type="checkbox" name="samePerson" id="same-person">
                         </div>
                     </div>
+                    <div class="delivery-button-container">
+                        <span><input type="checkbox" class="delivery-button" />(선택사항)보내는사람</span>
+                    </div>
+                    <div class="delivery-container"></div>
                     <div class="form-group">
-                        <label>수신자 이름</label>
-                        <input type="text" name="receiverName" placeholder="이름을 입력해주세요">
+                        <label>받는사람 이름</label>
+                        <input type="text" name="receiverName" placeholder="이름을 입력해주세요" maxlength="5">
                         <span class="error-message">이름을 입력해주세요</span>
                     </div>
                     <div class="form-group">
-                        <label>수신자 전화번호</label>
+                        <label>받는사람 전화번호</label>
                         <input type="text" name="receiverPhone" placeholder="전화번호를 입력해주세요" maxlength="13">
                         <span class="error-message">전화번호를 입력해주세요</span>
                     </div>

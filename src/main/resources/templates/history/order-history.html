@@ -12,6 +12,13 @@
         <div class="history-title">
             <a href="/logout">메인으로</a>
             <h1>주문 내역</h1>
+            <div class="notice-comment">
+                <span>각 내역을 누르면 수정 가능합니다.</span>
+                <div>
+                    <span>입금계좌 : 농협 302-0627-2628-61 정재하</span>&nbsp;&nbsp;
+                    <span class="inquiry-number">문의 전화번호 : 010-4532-4350</span>
+                </div>
+            </div>
         </div>
         <div class="search-area">
 <!--            <select name="ordererName" id="">-->
@@ -33,27 +40,33 @@
                 <col width="8%">
                 <col width="5%">
                 <col width="8%">
+                <col width="5%">
+                <col width="8%">
                 <col width="30%">
                 <col width="5%">
                 <col width="5%">
                 <col width="10%">
                 <col width="5%">
                 <col width="10%">
+                <col width="5%">
             </colgroup>
             <thead>
                 <tr>
                     <th scope="col">주문번호</th>
                     <th scope="col">구매자</th>
-                    <th scope="col">구매자 전화번호</th>
+                    <th scope="col">전화번호</th>
                     <th scope="col">주문일</th>
-                    <th scope="col">수령자</th>
-                    <th scope="col">수령자 전화번호</th>
+                    <th scope="col">보내는사람</th>
+                    <th scope="col">전화번호</th>
+                    <th scope="col">받는사람</th>
+                    <th scope="col">전화번호</th>
                     <th scope="col">주소</th>
                     <th scope="col">품종</th>
                     <th scope="col">kg</th>
                     <th scope="col">규격</th>
                     <th scope="col">수량</th>
                     <th scope="col">가격</th>
+                    <th scope="col">주문취소</th>
                 </tr>
             </thead>
             <tbody class="list-container">
@@ -70,6 +83,9 @@
             <div class="modal-content">
                 <div class="container">
                     <div class="signup-form">
+                        <div class="close-container">
+                            <span>X</span>
+                        </div>
                         <h2>수정하기</h2>
                         <div class="order-information-container">
                             <input type="hidden" name="orderId">
@@ -93,13 +109,25 @@
                                         <span>주문자 정보와 동일</span><input type="checkbox" name="samePerson" id="same-person">
                                     </div>
                                 </div>
+                                <div class="delivery-container">
+                                    <div class="form-group">
+                                        <label>보내는사람 이름</label>
+                                        <input type="text" name="deliveryName" placeholder="이름을 입력해주세요">
+                                        <span class="error-message">보내는사람 이름을 입력해주세요</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>보내는사람 전화번호</label>
+                                        <input type="text" name="deliveryPhone" placeholder="전화번호를 입력해주세요">
+                                        <span class="error-message">보내는사람 전화번호를 입력해주세요</span>
+                                    </div>
+                                </div>
                                 <div class="form-group">
-                                    <label>수신자 이름</label>
+                                    <label>받는사람 이름</label>
                                     <input type="text" name="receiverName" placeholder="이름을 입력해주세요">
                                     <span class="error-message">이름을 입력해주세요</span>
                                 </div>
                                 <div class="form-group">
-                                    <label>수신자 전화번호</label>
+                                    <label>받는사람 전화번호</label>
                                     <input type="text" name="receiverPhone" placeholder="전화번호를 입력해주세요" maxlength="13">
                                     <span class="error-message">전화번호를 입력해주세요</span>
                                 </div>

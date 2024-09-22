@@ -7,9 +7,12 @@ import lombok.Setter;
 @Setter
 public class OrderDTO {
     public Integer orderId;
+    public String orderPassword;
     public String orderOrdererName;
     public String orderOrdererPhone;
     public String orderDate;
+    public String orderDeliveryName;
+    public String orderDeliveryPhone;
     public String orderReceiverName;
     public String orderReceiverPhone;
     public String orderAddress;

@@ -7,7 +7,7 @@ $(function() {
         $('select[name=kind]').append(text);
     });
 
-    $(document).on('keyup', 'input[name=ordererPhone], input[name=receiverPhone]', function() {
+    $(document).on('keyup', 'input[name=ordererPhone], input[name=receiverPhone], input[name=deliveryPhone]', function() {
         $(this).val($(this).val().replace(/[^0-9]/gi, "").replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
     });
 
@@ -27,6 +27,26 @@ $(function() {
         if($(this).prop('checked')) {
             $(this).closest('.receive-information-container').find('input[name=receiverName]').val($('input[name=ordererName]').val());
             $(this).closest('.receive-information-container').find('input[name=receiverPhone]').val($('input[name=ordererPhone]').val());
+        }
+    });
+
+    $(document).on('click', '.delivery-button', function() {
+        if($(this).prop('checked')) {
+            let text = `
+                <div class="form-group">
+                    <label>보내는사람 이름</label>
+                    <input type="text" name="deliveryName" placeholder="이름을 입력해주세요" maxlength="5">
+                    <span class="error-message">보내는사람 이름을 입력해주세요</span>
+                </div>
+                <div class="form-group">
+                    <label>보내는사람 전화번호</label>
+                    <input type="text" name="deliveryPhone" placeholder="전화번호를 입력해주세요" maxlength="13">
+                    <span class="error-message">보내는사람 전화번호를 입력해주세요</span>
+                </div>
+            `;
+            $(this).closest('.receive-information-container').find('.delivery-container').append(text);
+        } else {
+            $(this).closest('.receive-information-container').find('.delivery-container').empty();
         }
     });
 
@@ -52,13 +72,17 @@ $(function() {
                         <span>주문자 정보와 동일</span><input type="checkbox" name="samePerson" id="same-person">
                     </div>
                 </div>
+                <div class="delivery-button-container">
+                    <span><input type="checkbox" class="delivery-button" />(선택사항)보내는사람</span>
+                </div>
+                <div class="delivery-container"></div>
                 <div class="form-group">
-                    <label>수신자 이름</label>
+                    <label>받는사람 이름</label>
                     <input type="text" name="receiverName" placeholder="이름을 입력해주세요">
                     <span class="error-message">이름을 입력해주세요</span>
                 </div>
                 <div class="form-group">
-                    <label>수신자 전화번호</label>
+                    <label>받는사람 전화번호</label>
                     <input type="text" name="receiverPhone" placeholder="전화번호를 입력해주세요">
                     <span class="error-message">전화번호를 입력해주세요</span>
                 </div>
@@ -213,6 +237,8 @@ $(function() {
 
     /* 등록 버튼 클릭 */
     $('.submit-button').on('click', () => {
+        let phoneRegex = /^(01[016789])-(\d{3,4})-(\d{4})$/;
+
         if(!$('input[name=ordererName]').val()) {
             alert('주문자 이름을 입력하세요');
             $('input[name=ordererName]').focus();
@@ -225,32 +251,56 @@ $(function() {
             return;
         }
 
+        if(!phoneRegex.test($('input[name=ordererPhone]').val())) {
+            alert('전화번호 형식을 확인해주세요');
+            $('input[name=ordererPhone]').focus();
+            return;
+        }
+
+        if(!$('input[name=orderPassword]').val()) {
+            alert('비밀번호(주문내역 확인용)를 입력하세요');
+            $('input[name=orderPassword]').focus();
+            return;
+        }
+
+        if(!/^\d{6}$/.test($('input[name=orderPassword]').val())) {
+            alert('비밀번호는 숫자 6자리로 설정해주세요');
+            $('input[name=orderPassword]').focus();
+            return;
+        }
+
         let orderDTOS = [];
+
         if($('input[name=receiverName]').length > 0) {
             for (let i = 0; i < $('input[name=receiverName]').length; i++) {
                 if(!$('input[name=receiverName]').eq(i).val()) {
-                    alert('수신자 이름을 입력하세요');
+                    alert('받는사람 이름을 입력하세요');
                     $('input[name=receiverName]').eq(i).focus();
                     return;
                 }
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["orderReceiverName"] = $('input[name=receiverName]').eq(i).val();
+                orderDTOS[i]["orderReceiverName"] = $('input[name=receiverName]').eq(i).val().trim();
             }
         }
 
         if($('input[name=receiverPhone]').length > 0) {
             for (let i = 0; i < $('input[name=receiverPhone]').length; i++) {
                 if(!$('input[name=receiverPhone]').eq(i).val()) {
-                    alert('수신자 전화번호를 입력하세요');
+                    alert('받는사람 전화번호를 입력하세요');
                     $('input[name=receiverPhone]').eq(i).focus();
+                    return;
+                }
+                if(!phoneRegex.test($('input[name=receiverPhone]').val())) {
+                    alert('전화번호 형식을 확인해주세요');
+                    $('input[name=receiverPhone]').focus();
                     return;
                 }
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["orderReceiverPhone"] = $('input[name=receiverPhone]').eq(i).val();
+                orderDTOS[i]["orderReceiverPhone"] = $('input[name=receiverPhone]').eq(i).val().trim();
             }
         }
 
@@ -264,7 +314,7 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["orderAddress"] = $('input[name=address]').eq(i).val();
+                orderDTOS[i]["orderAddress"] = $('input[name=address]').eq(i).val().trim();
             }
         }
 
@@ -273,7 +323,7 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["orderPostcode"] = $('input[name=postcode]').eq(i).val();
+                orderDTOS[i]["orderPostcode"] = $('input[name=postcode]').eq(i).val().trim();
             }
         }
 
@@ -287,7 +337,7 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["orderAddressDetail"] = $('input[name=addressDetail]').eq(i).val();
+                orderDTOS[i]["orderAddressDetail"] = $('input[name=addressDetail]').eq(i).val().trim();
             }
         }
 
@@ -301,7 +351,7 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["orderKind"] = $('select[name=kind]').eq(i).val();
+                orderDTOS[i]["orderKind"] = $('select[name=kind]').eq(i).val().trim();
             }
         }
 
@@ -315,7 +365,7 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["orderWeight"] = $('select[name=weight]').eq(i).val();
+                orderDTOS[i]["orderWeight"] = $('select[name=weight]').eq(i).val().trim();
             }
         }
 
@@ -329,7 +379,7 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["orderSize"] = $('select[name=size]').eq(i).val();
+                orderDTOS[i]["orderSize"] = $('select[name=size]').eq(i).val().trim();
             }
         }
 
@@ -338,7 +388,7 @@ $(function() {
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
                 }
-                orderDTOS[i]["orderCount"] = $('input[name=amount]').eq(i).val();
+                orderDTOS[i]["orderCount"] = $('input[name=amount]').eq(i).val().trim();
             }
         }
 
@@ -348,10 +398,24 @@ $(function() {
         }
 
         for (let i = 0; i < orderDTOS.length; i++) {
-            orderDTOS[i]["orderOrdererName"] = $('input[name=ordererName]').val();
-            orderDTOS[i]["orderOrdererPhone"] = $('input[name=ordererPhone]').val();
+            orderDTOS[i]["orderPassword"] = $('input[name=orderPassword]').val().trim();
+            orderDTOS[i]["orderOrdererName"] = $('input[name=ordererName]').val().trim();
+            orderDTOS[i]["orderOrdererPhone"] = $('input[name=ordererPhone]').val().trim();
+
+            let deliveryName = ($('input[name=deliveryName]').eq(i).val() ? $('input[name=deliveryName]').eq(i).val() : '정재하');
+            orderDTOS[i]["orderDeliveryName"] = deliveryName.trim();
+
+            let deliveryPhone = ($('input[name=deliveryPhone]').eq(i).val() ? $('input[name=deliveryPhone]').eq(i).val() : '010-4532-4350');
+
+            if(!phoneRegex.test(deliveryPhone)) {
+                alert('전화번호 형식을 확인해주세요');
+                $('input[name=deliveryPhone]').eq(i).focus();
+                return;
+            }
+
+            orderDTOS[i]["orderDeliveryPhone"] = deliveryPhone.trim();
         }
-        
+
         $.ajax({
             url: "/order",
             type: "post",

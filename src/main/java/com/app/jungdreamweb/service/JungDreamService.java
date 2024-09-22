@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.security.MessageDigest;
 import java.util.*;
 
 @Service
@@ -17,16 +18,40 @@ public class JungDreamService {
 
     private final JungDreamMapper jungDreamMapper;
 
+    public static String hash(String input) {
+        try {
+            // MessageDigest 인스턴스를 SHA-256으로 초기화
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            // 입력 문자열을 바이트 배열로 변환하여 해시 처리
+            byte[] hashBytes = digest.digest(input.getBytes("UTF-8"));
+
+            // 바이트 배열을 16진수 문자열로 변환
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+
+            // 해시 결과 반환
+            return hexString.toString();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<ProductInfoDTO> getProductInfo(Integer isFirst, String productKind, String productWeight, String productSize) {
         return jungDreamMapper.selectProduct(isFirst, productKind, productWeight, productSize);
     }
 
-    public boolean getOrderCount(String startDate, String endDate, String ordererName, String ordererPhone) {
-        return jungDreamMapper.selectOrderCount(startDate, endDate, ordererName, ordererPhone) > 0;
+    public boolean getOrderCount(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone) {
+        return jungDreamMapper.selectOrderCount(startDate, endDate, hash(orderPassword), ordererName, ordererPhone) > 0;
     }
 
-    public List<OrderDTO> getOrderList(String startDate, String endDate, String ordererName, String ordererPhone) {
-        return jungDreamMapper.selectOrderList(startDate, endDate, ordererName, ordererPhone);
+    public List<OrderDTO> getOrderList(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone) {
+        return jungDreamMapper.selectOrderList(startDate, endDate, hash(orderPassword), ordererName, ordererPhone);
     }
 
     public OrderDTO getOrder(Integer orderId) {
@@ -42,6 +67,7 @@ public class JungDreamService {
         for (OrderDTO orderDTO : orderDTOS) {
             List<ProductInfoDTO> productInfoDTOS = jungDreamMapper.selectProduct(null, orderDTO.getOrderKind(), orderDTO.orderWeight, orderDTO.getOrderSize());
             orderDTO.setOrderPrice(productInfoDTOS.get(0).productPrice * orderDTO.orderCount);
+            orderDTO.setOrderPassword(hash(orderDTO.getOrderPassword()));
             totalPrice += productInfoDTOS.get(0).productPrice * orderDTO.orderCount;
 
             jungDreamMapper.insertOrder(orderDTO);
@@ -56,7 +82,11 @@ public class JungDreamService {
         jungDreamMapper.updateOrder(orderDTO);
     }
 
-    public Map<String, Object> excelDownload(String startDate, String endDate, String ordererName, String ordererPhone) throws Exception {
+    public void deleteOrder(Integer orderId) {
+        jungDreamMapper.deleteOrder(orderId);
+    }
+
+    public Map<String, Object> excelDownload(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone) throws Exception {
 
         List<String> headList = null;				// 엑셀 해더
         List<List<String>> bodyList = null;			// 엑셀 바디
@@ -74,8 +104,10 @@ public class JungDreamService {
             headList.add("주문번호");
             headList.add("주문자");
             headList.add("주문자 전화번호");
-            headList.add("수신자");
-            headList.add("수신자 전화번호");
+            headList.add("보내는사람");
+            headList.add("보내는사람 전화번호");
+            headList.add("받는사람");
+            headList.add("받는사람 전화번호");
             headList.add("주소");
             headList.add("품종");
             headList.add("규격");
@@ -91,7 +123,7 @@ public class JungDreamService {
             Map<String, Object> argMap = new HashMap<String, Object>();
             List<OrderDTO> list = null;
 
-            list = jungDreamMapper.selectOrderList(startDate, endDate, ordererName, ordererPhone);
+            list = jungDreamMapper.selectOrderList(startDate, endDate, orderPassword, ordererName, ordererPhone);
 
             if (list.size() > 0) {
                 int i = 1;
@@ -101,6 +133,8 @@ public class JungDreamService {
                     tmpBodyList.add(String.valueOf(item.getOrderGroupId()));
                     tmpBodyList.add(item.getOrderOrdererName());
                     tmpBodyList.add(item.getOrderOrdererPhone());
+                    tmpBodyList.add(item.getOrderDeliveryName());
+                    tmpBodyList.add(item.getOrderDeliveryPhone());
                     tmpBodyList.add(item.getOrderReceiverName());
                     tmpBodyList.add(item.getOrderReceiverPhone());
                     tmpBodyList.add(item.getOrderAddress() + ", " + item.getOrderAddressDetail());

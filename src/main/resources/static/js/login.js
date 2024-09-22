@@ -15,8 +15,9 @@ $(function() {
     });
 
     function login() {
-        const $ordererName = $('input[name=name]').val();
-        const $ordererPhone = $('input[name=phoneNumber]').val();
+        const $ordererName = $('input[name=name]').val().trim();
+        const $ordererPhone = $('input[name=phoneNumber]').val().trim();
+        const $orderPassword = $('input[name=orderPassword]').val().trim();
 
         if(!$ordererName) {
             alert('이름을 입력하세요');
@@ -31,7 +32,7 @@ $(function() {
         $.ajax({
             url: "/login",
             type: "post",
-            data: { ordererName : $ordererName, ordererPhone : $ordererPhone },
+            data: { ordererName : $ordererName, ordererPhone : $ordererPhone, orderPassword : $orderPassword },
             success: function(result) {
                 if(result) {
                     if(result.msg == 'adminSuccess') {

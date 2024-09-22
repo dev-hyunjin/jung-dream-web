@@ -174,10 +174,10 @@ public class ExcelWriter {
 
         for (int i = 0; i < size; i++) {
             Cell cell = row.createCell(i);
-            if (i == 9 || i == 10) { // 10번째와 11번째 열 (0부터 시작하는 인덱스)
+            if (i == 11 || i == 12) { // 12번째와 13번째 열 (0부터 시작하는 인덱스)
                 cell.setCellValue(Double.parseDouble(cellList.get(i)));
                 cell.setCellStyle(numberStyle);
-            } else if (i == 11) { // 12번째 열
+            } else if (i == 13) { // 14번째 열
                 cell.setCellValue(Double.parseDouble(cellList.get(i)));
                 cell.setCellStyle(currencyStyle);
             } else {

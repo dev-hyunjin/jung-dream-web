@@ -59,8 +59,8 @@ public class JungDreamController {
     }
 
     @PostMapping("/login")
-    public String login(String ordererName, String ordererPhone, HttpSession session, Model model) {
-        if(ordererName.equals("admin") && ordererPhone.equals("1234")) {
+    public String login(String ordererName, String ordererPhone, String orderPassword, HttpSession session, Model model) {
+        if(ordererName.equals("admin") && ordererPhone.equals("010-4532-4350") && orderPassword.equals("123456")) {
             session.setAttribute("admin", "y");
 
             model.addAttribute("msg", "adminSuccess");
@@ -70,13 +70,13 @@ public class JungDreamController {
 
         // startDate는 1달 전으로 세팅
         LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
-        String startDate = startDate = String.valueOf(oneMonthAgo);
+        String startDate = String.valueOf(oneMonthAgo);
 
         //endDate는 오늘 날짜로 세팅
         String endDate = String.valueOf(LocalDate.now());
 
 
-        if(!jungDreamService.getOrderCount(startDate, endDate, ordererName, ordererPhone)) {
+        if(!jungDreamService.getOrderCount(startDate, endDate, orderPassword, ordererName, ordererPhone)) {
             model.addAttribute("msg", "최근 1달간 주문 내역이 없습니다");
 
             return "jsonView";
@@ -84,6 +84,7 @@ public class JungDreamController {
 
         session.setAttribute("ordererName", ordererName);
         session.setAttribute("ordererPhone", ordererPhone);
+        session.setAttribute("orderPassword", orderPassword);
 
         model.addAttribute("msg", "success");
 
@@ -102,13 +103,15 @@ public class JungDreamController {
         }
 
         String ordererPhone = String.valueOf(session.getAttribute("ordererPhone"));
+        String orderPassword = String.valueOf(session.getAttribute("orderPassword"));
         if(String.valueOf(session.getAttribute("admin")).equals("y")) {
             ordererPhone = "";
+            orderPassword = "";
         } else {
             ordererName = String.valueOf(session.getAttribute("ordererName"));
         }
 
-        List<OrderDTO> orderList = jungDreamService.getOrderList(startDate, endDate, ordererName, ordererPhone);
+        List<OrderDTO> orderList = jungDreamService.getOrderList(startDate, endDate, orderPassword, ordererName, ordererPhone);
         List<ProductInfoDTO> productInfoKinds = jungDreamService.getProductInfo(1, null, null, null);
 
         model.addAttribute("orderList", orderList);
@@ -138,12 +141,14 @@ public class JungDreamController {
 
             String ordererName = "";
             String ordererPhone = String.valueOf(session.getAttribute("ordererPhone"));
+            String orderPassword = String.valueOf(session.getAttribute("orderPassword"));
             if(String.valueOf(session.getAttribute("admin")).equals("y")) {
                 ordererPhone = "";
+                orderPassword = "";
             } else {
                 ordererName = String.valueOf(session.getAttribute("ordererName"));
             }
-            excelData = jungDreamService.excelDownload(startDate, endDate, ordererName, ordererPhone);
+            excelData = jungDreamService.excelDownload(startDate, endDate, orderPassword, ordererName, ordererPhone);
             return new ModelAndView(new ExcelXlsxView(), excelData);
         } catch (Exception e) {
             e.printStackTrace();

@@ -37,4 +37,9 @@ public class JungDreamRestController {
     public void orderUpdate(@RequestBody OrderDTO orderDTO) {
         jungDreamService.updateOrder(orderDTO);
     }
+
+    @PostMapping("/order-delete")
+    public void orderDelete(Integer orderId) {
+        jungDreamService.deleteOrder(orderId);
+    }
 }

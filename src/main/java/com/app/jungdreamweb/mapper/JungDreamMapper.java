@@ -11,9 +11,9 @@ public interface JungDreamMapper {
 
     public List<ProductInfoDTO> selectProduct(Integer isFirst, String productKind, String productWeight, String productSize);
 
-    public int selectOrderCount(String startDate, String endDate, String ordererName, String ordererPhone);
+    public int selectOrderCount(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone);
 
-    public List<OrderDTO> selectOrderList(String startDate, String endDate, String ordererName, String ordererPhone);
+    public List<OrderDTO> selectOrderList(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone);
 
     public OrderDTO selectOrder(Integer orderId);
 
@@ -22,4 +22,6 @@ public interface JungDreamMapper {
     public void insertOrder(OrderDTO orderDTO);
 
     public void updateOrder(OrderDTO orderDTO);
+
+    public void deleteOrder(Integer orderId);
 }

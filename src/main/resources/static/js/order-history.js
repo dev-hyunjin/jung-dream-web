@@ -42,6 +42,8 @@ $(function() {
                 <td>${order.orderOrdererName}</td>
                 <td>${order.orderOrdererPhone}</td>
                 <td>${order.orderDate}</td>
+                <td>${order.orderDeliveryName}</td>
+                <td>${order.orderDeliveryPhone}</td>
                 <td>${order.orderReceiverName}</td>
                 <td>${order.orderReceiverPhone}</td>
                 <td>${order.orderAddress} ${order.orderAddressDetail}</td>
@@ -50,6 +52,7 @@ $(function() {
                 <td>${order.orderSize}</td>
                 <td>${order.orderCount}</td>
                 <td><span class="price">${price}</span>원</td>
+                <td class="order-cancel">취소하기</td>
             </tr>
         `;
 

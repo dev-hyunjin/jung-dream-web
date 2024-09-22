@@ -41,12 +41,13 @@ h3 {
 header h1 {
     text-align: center;
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-weight: bold;
 }
 
 .explain-image {
     width: 100%;
+    margin-bottom: 30px;
 }
 
 .signup-form h2 {
@@ -71,6 +72,11 @@ header h1 {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
+}
+
+.delivery-button-container {
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 .form-group select {
