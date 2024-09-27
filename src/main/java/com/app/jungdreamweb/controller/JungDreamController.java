@@ -77,7 +77,7 @@ public class JungDreamController {
 
 
         if(!jungDreamService.getOrderCount(startDate, endDate, orderPassword, ordererName, ordererPhone)) {
-            model.addAttribute("msg", "최근 1달간 주문 내역이 없습니다");
+            model.addAttribute("msg", "입력하신 정보가 맞는지 다시 한번 확인해주세요");
 
             return "jsonView";
         }
