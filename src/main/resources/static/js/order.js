@@ -402,14 +402,16 @@ $(function() {
             orderDTOS[i]["orderOrdererName"] = $('input[name=ordererName]').val().trim();
             orderDTOS[i]["orderOrdererPhone"] = $('input[name=ordererPhone]').val().trim();
 
-            let deliveryName = ($('input[name=deliveryName]').eq(i).val() ? $('input[name=deliveryName]').eq(i).val() : '정재하');
+            let deliveryName = ($('input[name=receiverName]').eq(i).closest('.receive-information-container').find('input[name=deliveryName]').val()
+                ? $('input[name=receiverName]').eq(i).closest('.receive-information-container').find('input[name=deliveryName]').val() : '정재하');
             orderDTOS[i]["orderDeliveryName"] = deliveryName.trim();
 
-            let deliveryPhone = ($('input[name=deliveryPhone]').eq(i).val() ? $('input[name=deliveryPhone]').eq(i).val() : '010-4532-4350');
+            let deliveryPhone = ($('input[name=receiverName]').eq(i).closest('.receive-information-container').find('input[name=deliveryPhone]').val()
+                ? $('input[name=receiverName]').eq(i).closest('.receive-information-container').find('input[name=deliveryPhone]').val() : '010-4532-4350');
 
             if(!phoneRegex.test(deliveryPhone)) {
                 alert('전화번호 형식을 확인해주세요');
-                $('input[name=deliveryPhone]').eq(i).focus();
+                $('input[name=receiverName]').eq(i).closest('.receive-information-container').find('input[name=deliveryPhone]').focus();
                 return;
             }
 
