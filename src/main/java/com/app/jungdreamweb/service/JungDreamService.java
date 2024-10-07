@@ -51,7 +51,7 @@ public class JungDreamService {
     }
 
     public List<OrderDTO> getOrderList(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone) {
-        return jungDreamMapper.selectOrderList(startDate, endDate, hash(orderPassword), ordererName, ordererPhone);
+        return jungDreamMapper.selectOrderList(startDate, endDate, orderPassword.equals("") ? null : hash(orderPassword), ordererName, ordererPhone);
     }
 
     public OrderDTO getOrder(Integer orderId) {
