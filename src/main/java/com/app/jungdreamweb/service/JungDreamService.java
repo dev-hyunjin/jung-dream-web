@@ -46,12 +46,12 @@ public class JungDreamService {
         return jungDreamMapper.selectProduct(isFirst, productKind, productWeight, productSize);
     }
 
-    public boolean getOrderCount(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone) {
-        return jungDreamMapper.selectOrderCount(startDate, endDate, hash(orderPassword), ordererName, ordererPhone) > 0;
+    public int getOrderCount(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone, String orderEunjin) {
+        return jungDreamMapper.selectOrderCount(startDate, endDate, orderPassword.equals("") ? null : hash(orderPassword), ordererName, ordererPhone, orderEunjin);
     }
 
-    public List<OrderDTO> getOrderList(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone) {
-        return jungDreamMapper.selectOrderList(startDate, endDate, orderPassword.equals("") ? null : hash(orderPassword), ordererName, ordererPhone);
+    public List<OrderDTO> getOrderList(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone, String orderEunjin) {
+        return jungDreamMapper.selectOrderList(startDate, endDate, orderPassword.equals("") ? null : hash(orderPassword), ordererName, ordererPhone, orderEunjin);
     }
 
     public OrderDTO getOrder(Integer orderId) {
@@ -86,7 +86,7 @@ public class JungDreamService {
         jungDreamMapper.deleteOrder(orderId);
     }
 
-    public Map<String, Object> excelDownload(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone) throws Exception {
+    public Map<String, Object> excelDownload(String startDate, String endDate, String orderPassword, String ordererName, String ordererPhone, String orderEunjin) throws Exception {
 
         List<String> headList = null;				// 엑셀 해더
         List<List<String>> bodyList = null;			// 엑셀 바디
@@ -123,7 +123,7 @@ public class JungDreamService {
             Map<String, Object> argMap = new HashMap<String, Object>();
             List<OrderDTO> list = null;
 
-            list = jungDreamMapper.selectOrderList(startDate, endDate, orderPassword, ordererName, ordererPhone);
+            list = jungDreamMapper.selectOrderList(startDate, endDate, orderPassword, ordererName, ordererPhone, orderEunjin);
 
             if (list.size() > 0) {
                 int i = 1;

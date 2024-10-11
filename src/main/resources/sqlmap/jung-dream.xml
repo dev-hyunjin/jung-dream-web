@@ -72,7 +72,18 @@
         select count(order_id)
         from tbl_order
         where to_char(order_date, 'yyyy-mm-dd') between #{startDate} and #{endDate}
-            and order_orderer_name = #{ordererName} and order_orderer_phone = #{ordererPhone} and order_password = #{orderPassword}
+        <if test='ordererName != null and ordererName != ""'>
+            and order_orderer_name = #{ordererName}
+        </if>
+        <if test='ordererPhone != null and ordererPhone != ""'>
+            and order_orderer_phone = #{ordererPhone}
+        </if>
+        <if test='orderPassword != null and orderPassword != ""'>
+            and order_password = #{orderPassword}
+        </if>
+        <if test='orderEunjin != null and orderEunjin != ""'>
+            and order_eunjin = #{orderEunjin}
+        </if>
     </select>
 
     <select id="selectOrderList" resultType="orderDTO">
@@ -89,6 +100,9 @@
         </if>
         <if test='orderPassword != null and orderPassword != ""'>
             and order_password = #{orderPassword}
+        </if>
+        <if test='orderEunjin != null and orderEunjin != ""'>
+            and order_eunjin = #{orderEunjin}
         </if>
         order by order_group_id desc, order_id asc
     </select>
@@ -110,10 +124,10 @@
     <insert id="insertOrder">
         insert into tbl_order(order_password, order_orderer_name, order_orderer_phone, order_date, order_delivery_name, order_delivery_phone,
                               order_receiver_name, order_receiver_phone, order_address, order_address_detail, order_postcode,
-                              order_kind, order_weight, order_size, order_count, order_price, order_group_id)
+                              order_kind, order_weight, order_size, order_count, order_price, order_group_id, order_eunjin)
         values(#{orderPassword}, #{orderOrdererName}, #{orderOrdererPhone}, current_timestamp, #{orderDeliveryName}, #{orderDeliveryPhone},
                #{orderReceiverName}, #{orderReceiverPhone}, #{orderAddress}, #{orderAddressDetail}, #{orderPostcode},
-               #{orderKind}, #{orderWeight}, #{orderSize}, #{orderCount}, #{orderPrice}, currval('seq_order_group'))
+               #{orderKind}, #{orderWeight}, #{orderSize}, #{orderCount}, #{orderPrice}, currval('seq_order_group'), #{orderEunjin})
     </insert>
 
     <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: UPDATE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->

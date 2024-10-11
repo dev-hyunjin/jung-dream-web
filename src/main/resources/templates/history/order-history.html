@@ -26,6 +26,7 @@
 <!--                <option value="">정현진</option>-->
 <!--                <option value="">정재갑</option>-->
 <!--            </select>-->
+            <span th:text="'총 ' + ${orderCount} + '건'"/>
             <input type="date" name="startDate" id="start-date">~
             <input type="date" name="endDate" id="end-date">
             <button type="button" class="search">검색</button>

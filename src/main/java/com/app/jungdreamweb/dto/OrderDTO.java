@@ -24,4 +24,5 @@ public class OrderDTO {
     public Integer orderCount;
     public Integer orderPrice;
     public Integer orderGroupId;
+    public String orderEunjin;
 }

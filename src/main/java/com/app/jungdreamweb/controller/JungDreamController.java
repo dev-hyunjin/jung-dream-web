@@ -6,6 +6,7 @@ import com.app.jungdreamweb.excel.ExcelXlsxView;
 import com.app.jungdreamweb.service.JungDreamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,18 @@ import java.util.Map;
 public class JungDreamController {
 
     private final JungDreamService jungDreamService;
+
+    @Value("${admin.id}")
+    private String adminId;
+
+    @Value("${admin.phone}")
+    private String adminPhone;
+
+    @Value("${admin.password}")
+    private String adminPassword;
+
+    @Value("${is.eunjin}")
+    private boolean isEunjin;
 
     @GetMapping("/")
     public String index() {
@@ -60,7 +73,7 @@ public class JungDreamController {
 
     @PostMapping("/login")
     public String login(String ordererName, String ordererPhone, String orderPassword, HttpSession session, Model model) {
-        if(ordererName.equals("admin") && ordererPhone.equals("010-4532-4350") && orderPassword.equals("123456")) {
+        if(ordererName.equals(adminId) && ordererPhone.equals(adminPhone) && orderPassword.equals(adminPassword)) {
             session.setAttribute("admin", "y");
 
             model.addAttribute("msg", "adminSuccess");
@@ -76,7 +89,7 @@ public class JungDreamController {
         String endDate = String.valueOf(LocalDate.now());
 
 
-        if(!jungDreamService.getOrderCount(startDate, endDate, orderPassword, ordererName, ordererPhone)) {
+        if(jungDreamService.getOrderCount(startDate, endDate, orderPassword, ordererName, ordererPhone, isEunjin ? "Y" : "N") == 0) {
             model.addAttribute("msg", "입력하신 정보가 맞는지 다시 한번 확인해주세요");
 
             return "jsonView";
@@ -102,19 +115,24 @@ public class JungDreamController {
             endDate = String.valueOf(LocalDate.now());
         }
 
+        String orderEunjin = isEunjin ? "Y" : "N";
+
         String ordererPhone = String.valueOf(session.getAttribute("ordererPhone"));
         String orderPassword = String.valueOf(session.getAttribute("orderPassword"));
         if(String.valueOf(session.getAttribute("admin")).equals("y")) {
             ordererPhone = "";
             orderPassword = "";
+            orderEunjin = orderEunjin.equals("Y") ? "Y" : "";
         } else {
             ordererName = String.valueOf(session.getAttribute("ordererName"));
         }
 
-        List<OrderDTO> orderList = jungDreamService.getOrderList(startDate, endDate, orderPassword, ordererName, ordererPhone);
+        List<OrderDTO> orderList = jungDreamService.getOrderList(startDate, endDate, orderPassword, ordererName, ordererPhone, orderEunjin);
+        int orderCount = jungDreamService.getOrderCount(startDate, endDate, orderPassword, ordererName, ordererPhone, orderEunjin);
         List<ProductInfoDTO> productInfoKinds = jungDreamService.getProductInfo(1, null, null, null);
 
         model.addAttribute("orderList", orderList);
+        model.addAttribute("orderCount", orderCount);
         model.addAttribute("productInfoKinds", productInfoKinds);
 
         return "history/order-history";
@@ -139,16 +157,19 @@ public class JungDreamController {
                 endDate = String.valueOf(LocalDate.now());
             }
 
+            String orderEunjin = isEunjin ? "Y" : "N";
+
             String ordererName = "";
             String ordererPhone = String.valueOf(session.getAttribute("ordererPhone"));
             String orderPassword = String.valueOf(session.getAttribute("orderPassword"));
             if(String.valueOf(session.getAttribute("admin")).equals("y")) {
                 ordererPhone = "";
                 orderPassword = "";
+                orderEunjin = orderEunjin.equals("Y") ? "Y" : "";
             } else {
                 ordererName = String.valueOf(session.getAttribute("ordererName"));
             }
-            excelData = jungDreamService.excelDownload(startDate, endDate, orderPassword, ordererName, ordererPhone);
+            excelData = jungDreamService.excelDownload(startDate, endDate, orderPassword, ordererName, ordererPhone, orderEunjin);
             return new ModelAndView(new ExcelXlsxView(), excelData);
         } catch (Exception e) {
             e.printStackTrace();

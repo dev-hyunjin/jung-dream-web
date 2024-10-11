@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds">
-<!--	<property name="LOG_PATH" value="/device_web/postgres/log" />-->
-	<property name="LOG_PATH" value="C:/CHJ/jung-dream-web/log" />
-<!--	<property name="LOG_PATH" value="/data/log/compare" />-->
+<!--	<property name="LOG_PATH" value="C:/CHJ/jung-dream-web/log" />-->
+	<property name="LOG_PATH" value="C:/CHJ/jung-dream-web-eunjin/log" />
 	<property name="LOG_FILE_NAME" value="jung-dream-web" />
 	<property name="ERR_LOG_FILE_NAME" value="error_log" />
 
