@@ -18,6 +18,12 @@
                         where sub.product_kind = tbl_product_info.product_kind
                         and sub.product_sold_out = 'N'
                     ) then 'N'
+                    when exists (
+                        select 1
+                        from tbl_product_info as sub
+                        where sub.product_kind = tbl_product_info.product_kind
+                        and sub.product_sold_out = 'P'
+                    ) then 'P'
                     else 'Y'
                 end as product_sold_out
             </when>
@@ -30,6 +36,12 @@
                         where sub.product_weight = tbl_product_info.product_weight
                         and sub.product_sold_out = 'N'
                     ) then 'N'
+                    when exists (
+                        select 1
+                        from tbl_product_info as sub
+                        where sub.product_weight = tbl_product_info.product_weight
+                        and sub.product_sold_out = 'P'
+                    ) then 'P'
                     else 'Y'
                 end as product_sold_out
             </when>

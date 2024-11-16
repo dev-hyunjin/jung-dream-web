@@ -2,8 +2,30 @@ $(function() {
 
     productInfoKinds.forEach(productKind => {
         let text = `<option value="${productKind.productKind}"`
-            + (productKind.productSoldOut == 'Y' ? `disabled` : ``) +
-        `>${productKind.productKind}` + (productKind.productSoldOut == 'Y' ? `(품절)` : ``) + `</option>`;
+
+            // 품절 여부가 Y, P이면 비활성화
+            switch(productKind.productSoldOut) {
+                case 'Y':
+                case 'P':
+                    text += `disabled`;
+                    break;
+            }
+
+            // + (productKind.productSoldOut == 'Y' ? `disabled` : ``) +
+        text += `>${productKind.productKind}`;
+
+            // 품절 여부가 Y이면 품절, P이면 준비중이라고 표시
+            switch(productKind.productSoldOut) {
+                case 'Y':
+                    text += `(품절)`;
+                    break;
+                case 'P':
+                    text += `(준비중)`;
+                    break;
+            }
+
+            // + (productKind.productSoldOut == 'Y' ? `(품절)` : ``) +
+        text += `</option>`;
         $('select[name=kind]').append(text);
     });
 
@@ -103,8 +125,30 @@ $(function() {
                         `;
         productInfoKinds.forEach(productKind => {
             text += `<option value="${productKind.productKind}"`
-                + (productKind.productSoldOut == 'Y' ? `disabled` : ``) +
-                `>${productKind.productKind}` + (productKind.productSoldOut == 'Y' ? `(품절)` : ``) + `</option>`;
+
+            // 품절 여부가 Y, P이면 비활성화
+            switch(productKind.productSoldOut) {
+                case 'Y':
+                case 'P':
+                    text += `disabled`;
+                    break;
+            }
+                // + (productKind.productSoldOut == 'Y' ? `disabled` : ``) +
+
+            text += `>${productKind.productKind}`;
+
+            // 품절 여부가 Y이면 품절, P이면 준비중이라고 표시
+            switch(productKind.productSoldOut) {
+                case 'Y':
+                    text += `(품절)`;
+                    break;
+                case 'P':
+                    text += `(준비중)`;
+                    break;
+            }
+                // + (productKind.productSoldOut == 'Y' ? `(품절)` : ``) +
+
+            text += `</option>`;
         });
         text += `
                     </select>
@@ -165,9 +209,31 @@ $(function() {
                         selectBox.html(`<option value="">kg을 골라주세요</option>`);
 
                         result.forEach(data => {
-                            let text = `<option value="${data.productWeight}"`
-                                + (data.productSoldOut == 'Y' ? `disabled` : ``) +
-                                `>${data.productWeight}` + (data.productSoldOut == 'Y' ? `(품절)` : ``) + `</option>`;
+                            let text = `<option value="${data.productWeight}"`;
+
+                                // 품절 여부가 Y, P이면 비활성화
+                                switch(data.productSoldOut) {
+                                    case 'Y':
+                                    case 'P':
+                                        text += `disabled`;
+                                        break;
+                                }
+
+                                // + (data.productSoldOut == 'Y' ? `disabled` : ``) +
+                                text += `>${data.productWeight}`
+
+                                // 품절 여부가 Y이면 품절, P이면 준비중이라고 표시
+                                switch(data.productSoldOut) {
+                                    case 'Y':
+                                        text += `(품절)`;
+                                        break;
+                                    case 'P':
+                                        text += `(준비중)`;
+                                        break;
+                                }
+
+                                // + (data.productSoldOut == 'Y' ? `(품절)` : ``) +
+                                text += `</option>`;
                             selectBox.append(text);
                         });
                     } else {
@@ -175,9 +241,30 @@ $(function() {
 
                         selectBox.html(`<option value="">규격을 골라주세요</option>`);
                         result.forEach(data => {
-                            let text = `<option value="${data.productSize}"`
-                                + (data.productSoldOut == 'Y' ? `disabled` : ``) +
-                                `>${data.productSize}` + (data.productSoldOut == 'Y' ? `(품절)` : ``) + `</option>`;
+                            let text = `<option value="${data.productSize}"`;
+
+                            // 품절 여부가 Y, P이면 비활성화
+                            switch(data.productSoldOut) {
+                                case 'Y':
+                                case 'P':
+                                    text += `disabled`;
+                                    break;
+                            }
+                                // + (data.productSoldOut == 'Y' ? `disabled` : ``) +
+                            text += `>${data.productSize}`;
+
+                            // 품절 여부가 Y이면 품절, P이면 준비중이라고 표시
+                            switch(data.productSoldOut) {
+                                case 'Y':
+                                    text += `(품절)`;
+                                    break;
+                                case 'P':
+                                    text += `(준비중)`;
+                                    break;
+                            }
+
+                            // + (data.productSoldOut == 'Y' ? `(품절)` : ``) +
+                            text += `</option>`;
                             selectBox.append(text);
                         });
                     }
