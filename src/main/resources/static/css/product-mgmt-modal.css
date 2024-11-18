@@ -1,0 +1,130 @@
+/* 전체 폰트적용 */
+* {
+    font-family: Arial, sans-serif;
+}
+
+/* select박스나 option에 글자 가운데맞춤 */
+select, option {
+    text-align: center;
+}
+
+/* select 박스 테두리 설정 */
+select {
+    border: 1px solid rgb(199 199 199);
+    border-radius: 5px;
+}
+
+/* input 태그에 readonly일 경우 배경색 설정 */
+input:read-only {
+    background-color: #bababa99;
+}
+
+/* input 태그 테두리 설정 */
+input {
+    border: 1px solid rgb(199 199 199);
+    border-radius: 5px;
+}
+
+/* 모달 떴을 때 배경 */
+.modal-container{
+    display: none;
+    /* display: flex; */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    justify-content: center;
+    transition: background-color .1s;
+    align-items: center;
+    background: rgba(0,0,0, .4);
+    padding: 0 24px;
+}
+
+/* 모달 형태 설정 */
+.modal {
+    display: flex;
+    justify-content: center;
+    width: 360px;
+    background: #fff;
+    animation: modal-show .3s;
+    border-radius: 12px;
+}
+
+/* 내용 윗부분 띄우기 */
+.modal-content {
+    margin-top: 40px;
+}
+
+/* 모달 제목 설정 */
+.modal-title {
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 20px;
+    margin-left: 30px;
+}
+
+.modal-close {
+    float: right;
+    width: 35px;
+    cursor: pointer;
+}
+
+/* 모달 제목 설정 */
+.modal-title {
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.modal-major-content {
+    display: flex;
+}
+
+/* 각 항목 div 설정 */
+.text {
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px;
+}
+
+/* 항목 이름과 input 태그 띄우고 글씨 크기 설정 */
+.user-text {
+    font-size: 20px;
+    margin-bottom: 27px;
+}
+
+/* input 태그 제목 div 설정 */
+.text-input {
+    display: flex;
+    flex-direction: column;
+}
+
+/* input 태그 길이 설정 */
+.user-input {
+    width: 210px;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+/* 버튼 div 부분 설정 */
+.modal-button {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+/* 버튼 설정 */
+.modal-btn {
+    border: 0;
+    background-color: rgb(102, 153, 204);
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: cafe24air;
+    font-weight: lighter;
+}

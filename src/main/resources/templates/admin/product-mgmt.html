@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/css/side.css">
+    <link rel="stylesheet" href="../../static/css/product-mgmt.css">
+    <link rel="stylesheet" href="../../static/css/product-mgmt-modal.css">
+    <title>상품관리</title>
+</head>
+<body>
+    <div class="main">
+
+        <!-- side.html 추가하기 -->
+        <div class="side"  th:replace="fragments/side :: side"></div>
+        <!-- 사이드 시작 -->
+        <div class="side-box">
+            <!-- <div class="color_template">
+                <span class="color_template_item">🎨</span>
+                <div class="click_color">
+                    <select class="template_color" name="template_color">
+                        <option value="">default</option>
+                        <option value="dark">Dark</option>
+                        <option value="warm">warm</option>
+                        <option value="earth">Earth</option>
+                        <option value="vintage">Vintage</option>
+                        <option value="cream">Cream</option>
+                        <option value="coffee">Coffee</option>
+                    </select>
+                </div>
+            </div> -->
+    
+            <ul class="content">
+                <li class="listpage"><a href="">상품 관리</a></li>
+                <li class="schedulepage"><a href="">사진 관리</a></li>
+                <li class="statisticspage"><a href="">판매자 정보</a></li>
+                <!-- 이름, 전화번호, 계좌번호 -->
+                <!-- <li class="adminpage"><a href="">관리자</a></li> -->
+            </ul>
+        </div>
+        <!-- 사이드 끝 -->
+
+        <!-- 메인 시작 -->
+        <div class="main-box">
+            <!-- 페이지 제목 -->
+            <div class="title">
+                <h2>상품 관리</h2>
+            </div>
+            <!-- 페이지 제목 끝 -->
+
+            <input type="hidden" id="work-start-time"/>
+            <input type="hidden" id="work-end-time"/>
+
+            <!-- 서브 페이지 시작 -->
+            <!-- <div class="sub-page">
+                <li id="click2" onclick="javascript: location.href='/admin/user-mgmt';">품종 관리</li>
+                <li onclick="javascript: location.href='/admin/department-mgmt';">kg 관리</li>
+                <li onclick="javascript: location.href='/admin/workplace-mgmt';">규격 관리</li>
+                <li onclick="javascript: location.href='/admin/work-mgmt?workStartTime=' + $('#work-start-time').val() + '&workEndTime=' + $('#work-end-time').val();">근무 관리</li>
+            </div> -->
+            <!-- 서브 페이지 끝 -->
+
+            <!-- 사원 관리 시작 -->
+            <div class="st-list">
+                <!-- 검색 요소 시작-->
+                <div class="btn-main">
+                    <!-- <li class="e-check">전체보기 <input type="checkbox" class="show-all"></li>
+
+                    <li class="wo-check">
+                        <select name="" id="dept-list" class="dept-list">
+                            <option value="">부서를 선택해주세요</option>
+                        </select>
+                    </li>
+
+                    <li class="team-check">
+                        <select name="" id="team-list" class="team-list">
+                            <option value="">소속을 선택해주세요</option>
+                        </select>
+                    </li>
+
+                    <li class="name-check">
+                        <input type="text" placeholder="이름을 입력해주세요." class="search-name">
+                    </li>
+
+                    <li><button class="submit" type="button">검색</button></li> -->
+                    <li><button class="create" type="button">등록</button></li>
+                </div>
+                <!-- 검색 요소 끝 -->
+
+                <!-- 사원 리스트 시작 -->
+                <div class="list-main-box">
+                    <ul class="user-list-box">
+                        <!-- <li class="null"></li> -->
+                        <li class="name">품종</li>
+                        <li class="identity">키로수</li>
+                        <li class="dept">규격</li>
+                        <li class="team">가격</li>
+                        <li class="team">상태</li>
+                        <li class="button-null">수정 / 삭제</li>
+                    </ul>
+                    <hr>
+                    <!-- <div th:if="${pageDTO.total == 0}">데이터가 없습니다.</div> -->
+                    <!--사원 리스트 반복-->
+                   <div class="user-box">
+                       <ul class="user-list-sub">
+                           <!-- <li class="null"></li> -->
+                           <li class="name">부사</li>
+                           <li class="identity">5kg</li>
+                           <li class="dept">1번(15~17과)</li>
+                           <li class="team">40000</li>
+                           <li class="team">품절</li>
+                           <li class="btn">
+                               <button type="button" class="edit">수정</button>
+                               <button type="button" class="delete">삭제</button>
+                           </li>
+                        </ul>
+                       <hr>
+                    <!--사원 리스트 반복 끝-->
+                    </div>
+
+
+                    <!-- 페이징 -->
+                    <!-- <div class="paging-wrapper">
+                        <ul class="paging-wrap">
+                            <li th:if="${pageDTO.prev}" class="paging-prev-wrap" title="이전 페이지">
+                                <a th:href="@{/admin/user-mgmt} + '?page=' + ${pageDTO.pageStart - 1} + '&deptNumber=&teamNumber=&memberName=&memberUse=Y'" class="prev-btn">
+                                    <div class="prev">
+                                        <svg viewBox="0 0 48 48">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M32.8912 45.3014L12 23.913L32.8912 2.52471C33.5866 1.8251 34.7804 1.8251 35.4777 2.52471C36.1741 3.22333 36.1741 4.42368 35.4777 5.22224L17.1731 23.913L35.4777 42.7018C36.1741 43.4024 36.1741 44.6018 35.4777 45.4013C35.0788 45.8011 34.6819 46 34.1845 46C33.7855 45.9011 33.2881 45.7002 32.8912 45.3014Z"></path>
+                                        </svg>
+                                    </div>
+                                </a>
+                            </li>
+                            <th:block th:each="page:${#numbers.sequence(pageDTO.pageStart, pageDTO.pageEnd)}">
+                                <li th:if="${pageDTO.criteria.pageNum == page}" title="1" class="paging-item-selected" tabindex="0">
+                                    <a rel="nofollow" th:text="${page}">1</a>
+                                </li>
+                                <li th:if="${pageDTO.criteria.pageNum != page && pageDTO.total != 0}" title="2" class="paging-item" tabindex="0">
+                                    <a th:href="@{/admin/user-mgmt} + '?page=' + ${page} + '&deptNumber=&teamNumber=&memberName=&memberUse=Y'" rel="nofollow" th:text="${page}" class="number-btn">2</a>
+                                </li>
+                            </th:block>
+                            <li th:if="${pageDTO.next}" title="다음 페이지" tabindex="0" class="paging-next" aria-disabled="false">
+                                <a th:href="@{/admin/user-mgmt} + '?page=' + ${pageDTO.pageEnd + 1} + '&deptNumber=&teamNumber=&memberName=&memberUse=Y'" class="next-btn">
+                                    <div class="next">
+                                        <svg viewBox="0 0 48 48">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M13.9071 46C13.4118 46 12.9164 45.8001 12.6192 45.4003C11.9257 44.7007 11.9257 43.5014 12.6192 42.7019L30.8493 24.0125L12.5201 5.22317C11.8266 4.52357 11.8266 3.32425 12.5201 2.5247C13.2136 1.8251 14.3034 1.8251 15.096 2.5247L36 24.0125L15.195 45.4003C14.7988 45.8001 14.3034 46 13.9071 46Z"></path>
+                                        </svg>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div> -->
+                </div>
+                <!-- 사원 리스트 끝 -->
+            </div>
+            <!-- 사원 관리 끝 -->
+
+        </div>
+    </div>
+
+
+    <!-- 사원 등록 모달 -->
+    <div class="modal-container">
+        <div class="modal">
+            <div class="modal-content">
+                <form action="" method="post" th:object="" name="joinForm">
+                    <div class="modal-title">
+                        <span>상품 등록</span>
+                        <div class="modal-close">
+                            <svg xmlns="http://www.w3.org/2000/svg" data-name="Capa 1" id="Capa_1" viewBox="0 0 20 19.84">
+                                <path d="M10.17,10l3.89-3.89a.37.37,0,1,0-.53-.53L9.64,9.43,5.75,5.54a.37.37,0,1,0-.53.53L9.11,10,5.22,13.85a.37.37,0,0,0,0,.53.34.34,0,0,0,.26.11.36.36,0,0,0,.27-.11l3.89-3.89,3.89,3.89a.34.34,0,0,0,.26.11.35.35,0,0,0,.27-.11.37.37,0,0,0,0-.53Z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="modal-major-content">
+                        <div class="text">
+                            <span class="user-text">품종</span>
+                            <span class="user-text">키로수</span>
+                            <span class="user-text">규격</span>
+                            <span class="user-text">가격</span>
+                            <span class="user-text">상태</span>
+                        </div>
+                        <div class="text-input">
+                            <input type="text" class="user-input" name="productKind">
+                            <input type="text" class="user-input" name="productWeight">
+                            <input type="text" class="user-input" name="productSize">
+                            <input type="text" class="user-input" name="productPrice">
+                            <select class="user-input" id="member-department" name="productSoldOut">
+                               <option value="">판매중</option>
+                               <option value="">품절</option>
+                               <option value="">준비중</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-button">
+                        <button type="button" class="modal-btn" id="join-btn">등록</button>
+                        <button type="button" class="modal-btn modal-real-close">취소</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 사원 등록 모달 끝 -->
+
+    <!-- 사원 수정 모달 -->
+    <div class="modal-container">
+        <div class="modal">
+            <div class="modal-content">
+                <div class="modal-title">
+                    <span>상품 수정</span>
+                    <div class="modal-close">
+                        <svg xmlns="http://www.w3.org/2000/svg" data-name="Capa 1" id="Capa_1" viewBox="0 0 20 19.84">
+                            <path d="M10.17,10l3.89-3.89a.37.37,0,1,0-.53-.53L9.64,9.43,5.75,5.54a.37.37,0,1,0-.53.53L9.11,10,5.22,13.85a.37.37,0,0,0,0,.53.34.34,0,0,0,.26.11.36.36,0,0,0,.27-.11l3.89-3.89,3.89,3.89a.34.34,0,0,0,.26.11.35.35,0,0,0,.27-.11.37.37,0,0,0,0-.53Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="modal-major-content">
+                    <div class="text">
+                        <span class="user-text">품종</span>
+                        <span class="user-text">키로수</span>
+                        <span class="user-text">규격</span>
+                        <span class="user-text">가격</span>
+                        <span class="user-text">상태</span>
+                    </div>
+                    <div class="text-input">
+                        <input type="text" class="user-input" name="productKind">
+                        <input type="text" class="user-input" name="productWeight" placeholder="">
+                        <input type="text" class="user-input" name="productSize">
+                        <input type="text" class="user-input" name="productPrice">
+                        <select class="user-input" id="member-department" name="productSoldOut">
+                            <option value="">판매중</option>
+                            <option value="">품절</option>
+                            <option value="">준비중</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-button">
+                    <button type="button" class="modal-btn" id="modify-btn">수정</button>
+                    <button type="button" class="modal-btn modal-real-close">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 사원 수정 모달 끝 -->
+
+    <!-- 사원 삭제 모달 -->
+    <div class="modal-container">
+        <div class="modal">
+            <div class="modal-content">
+                <div class="modal-major-content">
+                    <span class="user-text" style="margin-right: 0;">정말로 삭제하시겠습니까?</span>
+                    <input type="hidden" id="member-delete-number">
+                </div>
+                <div class="modal-button">
+                    <button type="button" class="modal-btn" style="background-color: rgb(252 82 48);" id="member-delete">삭제</button>
+                    <button type="button" class="modal-btn modal-real-close">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 사원 삭제 모달 끝 -->
+</body>
+</html>
