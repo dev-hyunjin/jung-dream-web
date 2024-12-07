@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/css/side.css">
+    <link rel="stylesheet" href="../../static/css/product-mgmt.css">
+    <title>사진관리</title>
+</head>
+<body>
+    <div class="main">
+
+        <!-- side.html 추가하기 -->
+        <div class="side"  th:replace="fragments/side :: side"></div>
+        <!-- 사이드 시작 -->
+        <div class="side-box">
+            <!-- <div class="color_template">
+                <span class="color_template_item">🎨</span>
+                <div class="click_color">
+                    <select class="template_color" name="template_color">
+                        <option value="">default</option>
+                        <option value="dark">Dark</option>
+                        <option value="warm">warm</option>
+                        <option value="earth">Earth</option>
+                        <option value="vintage">Vintage</option>
+                        <option value="cream">Cream</option>
+                        <option value="coffee">Coffee</option>
+                    </select>
+                </div>
+            </div> -->
+    
+            <ul class="content">
+                <li class="listpage"><a href="">상품 관리</a></li>
+                <li class="schedulepage"><a href="">설정</a></li>
+                <li class="statisticspage"><a href="">판매자 정보</a></li>
+                <!-- 이름, 전화번호, 계좌번호 -->
+                <!-- <li class="adminpage"><a href="">관리자</a></li> -->
+            </ul>
+        </div>
+        <!-- 사이드 끝 -->
+
+        <!-- 메인 시작 -->
+        <div class="main-box">
+            <!-- 페이지 제목 -->
+            <div class="title">
+                <h2>사진 관리</h2>
+            </div>
+            <!-- 페이지 제목 끝 -->
+
+            <!-- 사진 관리 시작 -->
+            <div class="st-list">
+                <div class="list-main-box" style="gap: 10px;">
+                    <span>현재 이미지</span>
+                    <div>
+                        <img src="../../static/image/홍보전단(골드,후지)001.png" alt="현재 이미지" style="width: 50%; border: 1px solid black;">
+                    </div>
+                    <input type="file" alt="이미지" accept=".png, .jpg, .jpeg">
+                    <div class="btn-area">
+                        <button type="button" class="create">등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
