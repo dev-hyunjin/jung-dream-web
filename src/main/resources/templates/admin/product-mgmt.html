@@ -1,45 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../static/css/side.css">
-    <link rel="stylesheet" href="../../static/css/product-mgmt.css">
-    <link rel="stylesheet" href="../../static/css/product-mgmt-modal.css">
+    <link rel="stylesheet" href="/css/side.css">
+    <link rel="stylesheet" href="/css/product-mgmt.css">
+    <link rel="stylesheet" href="/css/product-mgmt-modal.css">
     <title>상품관리</title>
+    <script src="/js/plugins/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="main">
 
         <!-- side.html 추가하기 -->
-        <div class="side"  th:replace="fragments/side :: side"></div>
-        <!-- 사이드 시작 -->
-        <div class="side-box">
-            <!-- <div class="color_template">
-                <span class="color_template_item">🎨</span>
-                <div class="click_color">
-                    <select class="template_color" name="template_color">
-                        <option value="">default</option>
-                        <option value="dark">Dark</option>
-                        <option value="warm">warm</option>
-                        <option value="earth">Earth</option>
-                        <option value="vintage">Vintage</option>
-                        <option value="cream">Cream</option>
-                        <option value="coffee">Coffee</option>
-                    </select>
-                </div>
-            </div> -->
-    
-            <ul class="content">
-                <li class="listpage"><a href="">상품 관리</a></li>
-                <li class="schedulepage"><a href="">설정</a></li>
-                <li class="statisticspage"><a href="">판매자 정보</a></li>
-                <!-- 이름, 전화번호, 계좌번호 -->
-                <!-- <li class="adminpage"><a href="">관리자</a></li> -->
-            </ul>
-        </div>
-        <!-- 사이드 끝 -->
+        <div class="side"  th:replace="admin/side :: side"></div>
 
         <!-- 메인 시작 -->
         <div class="main-box">
@@ -103,19 +77,19 @@
                     <!-- <div th:if="${pageDTO.total == 0}">데이터가 없습니다.</div> -->
                     <!--사원 리스트 반복-->
                    <div class="user-box">
-                       <ul class="user-list-sub">
-                           <!-- <li class="null"></li> -->
-                           <li class="name">부사</li>
-                           <li class="identity">5kg</li>
-                           <li class="dept">1번(15~17과)</li>
-                           <li class="team">40000</li>
-                           <li class="team">품절</li>
-                           <li class="btn">
-                               <button type="button" class="edit">수정</button>
-                               <button type="button" class="delete">삭제</button>
-                           </li>
-                        </ul>
-                       <hr>
+<!--                       <ul class="user-list-sub">-->
+<!--                           &lt;!&ndash; <li class="null"></li> &ndash;&gt;-->
+<!--                           <li class="name">부사</li>-->
+<!--                           <li class="identity">5kg</li>-->
+<!--                           <li class="dept">1번(15~17과)</li>-->
+<!--                           <li class="team">40000</li>-->
+<!--                           <li class="team">품절</li>-->
+<!--                           <li class="btn">-->
+<!--                               <button type="button" class="edit">수정</button>-->
+<!--                               <button type="button" class="delete">삭제</button>-->
+<!--                           </li>-->
+<!--                        </ul>-->
+<!--                       <hr>-->
                     <!--사원 리스트 반복 끝-->
                     </div>
 
@@ -161,10 +135,10 @@
 
 
     <!-- 사원 등록 모달 -->
-    <div class="modal-container">
+    <div class="modal-container registration-modal">
         <div class="modal">
             <div class="modal-content">
-                <form action="" method="post" th:object="" name="joinForm">
+                <form action="" method="post" name="joinForm">
                     <div class="modal-title">
                         <span>상품 등록</span>
                         <div class="modal-close">
@@ -186,15 +160,15 @@
                             <input type="text" class="user-input" name="productWeight">
                             <input type="text" class="user-input" name="productSize">
                             <input type="text" class="user-input" name="productPrice">
-                            <select class="user-input" id="member-department" name="productSoldOut">
-                               <option value="">판매중</option>
-                               <option value="">품절</option>
-                               <option value="">준비중</option>
+                            <select class="user-input" id="product-department" name="productSoldOut">
+                               <option value="N">판매중</option>
+                               <option value="Y">품절</option>
+                               <option value="P">준비중</option>
                             </select>
                         </div>
                     </div>
                     <div class="modal-button">
-                        <button type="button" class="modal-btn" id="join-btn">등록</button>
+                        <button type="button" class="modal-btn" id="registration-btn">등록</button>
                         <button type="button" class="modal-btn modal-real-close">취소</button>
                     </div>
                 </form>
@@ -204,7 +178,7 @@
     <!-- 사원 등록 모달 끝 -->
 
     <!-- 사원 수정 모달 -->
-    <div class="modal-container">
+    <div class="modal-container modify-modal">
         <div class="modal">
             <div class="modal-content">
                 <div class="modal-title">
@@ -224,14 +198,14 @@
                         <span class="user-text">상태</span>
                     </div>
                     <div class="text-input">
-                        <input type="text" class="user-input" name="productKind">
-                        <input type="text" class="user-input" name="productWeight" placeholder="">
-                        <input type="text" class="user-input" name="productSize">
+                        <input type="text" class="user-input" name="productKind" readonly>
+                        <input type="text" class="user-input" name="productWeight" readonly>
+                        <input type="text" class="user-input" name="productSize" readonly>
                         <input type="text" class="user-input" name="productPrice">
-                        <select class="user-input" id="member-department" name="productSoldOut">
-                            <option value="">판매중</option>
-                            <option value="">품절</option>
-                            <option value="">준비중</option>
+                        <select class="product-sold-out" name="productSoldOut">
+                            <option value="N">판매중</option>
+                            <option value="Y">품절</option>
+                            <option value="P">준비중</option>
                         </select>
                     </div>
                 </div>
@@ -245,15 +219,17 @@
     <!-- 사원 수정 모달 끝 -->
 
     <!-- 사원 삭제 모달 -->
-    <div class="modal-container">
+    <div class="modal-container remove-modal">
         <div class="modal">
             <div class="modal-content">
                 <div class="modal-major-content">
                     <span class="user-text" style="margin-right: 0;">정말로 삭제하시겠습니까?</span>
-                    <input type="hidden" id="member-delete-number">
+                    <input type="hidden" name="productKind">
+                    <input type="hidden" name="productWeight">
+                    <input type="hidden" name="productSize">
                 </div>
                 <div class="modal-button">
-                    <button type="button" class="modal-btn" style="background-color: rgb(252 82 48);" id="member-delete">삭제</button>
+                    <button type="button" class="modal-btn" style="background-color: rgb(252 82 48);" id="delete-btn">삭제</button>
                     <button type="button" class="modal-btn modal-real-close">취소</button>
                 </div>
             </div>
@@ -261,4 +237,8 @@
     </div>
     <!-- 사원 삭제 모달 끝 -->
 </body>
+<script th:inline="javascript">
+    let productInfoList = [[${productInfoList}]];
+</script>
+<script src="/js/product-mgmt.js"></script>
 </html>

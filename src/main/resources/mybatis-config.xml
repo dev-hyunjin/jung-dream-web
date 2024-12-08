@@ -17,5 +17,7 @@
 	<typeAliases>
 	    <typeAlias type="com.app.jungdreamweb.dto.OrderDTO" alias="orderDTO"/>
 	    <typeAlias type="com.app.jungdreamweb.dto.ProductInfoDTO" alias="productInfoDTO"/>
+	    <typeAlias type="com.app.jungdreamweb.dto.FileDTO" alias="fileDTO"/>
+	    <typeAlias type="com.app.jungdreamweb.dto.SellerDTO" alias="sellerDTO"/>
 	</typeAliases>
 </configuration>

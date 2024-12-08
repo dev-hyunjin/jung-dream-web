@@ -1,0 +1,5 @@
+INFO  24-12-07 17:14:01[Thread-7] [Http11NioProtocol:173] - Pausing ProtocolHandler ["http-nio-80"]
+INFO  24-12-07 17:14:01[Thread-7] [StandardService:173] - Stopping service [Tomcat]
+INFO  24-12-07 17:14:01[Thread-7] [[/]:173] - Destroying Spring FrameworkServlet 'dispatcherServlet'
+INFO  24-12-07 17:14:01[Thread-7] [Http11NioProtocol:173] - Stopping ProtocolHandler ["http-nio-80"]
+INFO  24-12-07 17:14:01[Thread-7] [Http11NioProtocol:173] - Destroying ProtocolHandler ["http-nio-80"]

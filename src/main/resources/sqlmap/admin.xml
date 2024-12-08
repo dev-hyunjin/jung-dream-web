@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.jungdreamweb.mapper.AdminMapper">
+
+    <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+    <select id="selectProductInfoList" resultType="productInfoDTO">
+        select product_kind, product_weight, product_size, product_price,
+               case
+                   when product_sold_out = 'Y' then '품절'
+                   when product_sold_out = 'N' then '판매중'
+                   else '준비중' end as product_sold_out
+        from tbl_product_info
+        order by product_kind, product_weight desc,
+             case when product_size like '특%' then 0
+             else cast(regexp_replace(product_size, '[^0-9]', '', 'g') as integer) end
+    </select>
+
+    <select id="selectProductInfo" resultType="productInfoDTO">
+        select product_kind, product_weight, product_size, product_price, product_sold_out
+        from tbl_product_info
+        where product_kind = #{productKind} and product_weight = #{productWeight} and product_size = #{productSize}
+    </select>
+
+    <select id="selectFile" resultType="fileDTO">
+        select file_uuid, file_path, file_name
+        from tbl_file
+    </select>
+
+    <select id="selectSeller" resultType="sellerDTO">
+        select seller_name, seller_phone, seller_account_bank, seller_account_number, seller_account_owner
+        from tbl_seller
+    </select>
+
+    <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INSERT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+    <insert id="insertProductInfo" parameterType="productInfoDTO">
+        insert into tbl_product_info(product_kind, product_weight, product_size, product_price, product_sold_out)
+        values(#{productKind}, #{productWeight}, #{productSize}, #{productPrice}, #{productSoldOut})
+    </insert>
+
+    <insert id="insertFile" parameterType="fileDTO">
+        insert into tbl_file(file_uuid, file_path, file_name)
+        values(#{fileUuid}, #{filePath}, #{fileName})
+    </insert>
+
+    <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: UPDATE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+    <update id="updateProductInfo" parameterType="productInfoDTO">
+        update tbl_product_info
+        set product_price = #{productPrice}, product_sold_out = #{productSoldOut}
+        where product_kind = #{productKind} and product_weight = #{productWeight} and product_size = #{productSize}
+    </update>
+
+    <update id="updateSeller" parameterType="sellerDTO">
+        update tbl_seller
+        set seller_name = #{sellerName},
+            seller_phone = #{sellerPhone},
+            seller_account_bank = #{sellerAccountBank},
+            seller_account_number = #{sellerAccountNumber},
+            seller_account_owner = #{sellerAccountOwner}
+    </update>
+
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  DELETE  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+    <delete id="deleteProductInfo">
+        delete from tbl_product_info
+        where product_kind = #{productKind} and product_weight = #{productWeight} and product_size = #{productSize}
+    </delete>
+
+    <delete id="deleteFile">
+        delete from tbl_file
+    </delete>
+
+</mapper>
