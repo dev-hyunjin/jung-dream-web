@@ -28,6 +28,8 @@ public class WebConfiguration implements WebMvcConfigurer {
 			.order(1)											// 인터셉터 체인 순서
 			.addPathPatterns(									// interceptor 작업이 필요한 path를 모두 추가한다
 					 "/order-history"							// 기본 정보 관리
+					,"/admin/*"
+					,"/admins/*"
 			);
 	}
 	

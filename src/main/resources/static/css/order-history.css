@@ -64,6 +64,11 @@ div {
     color: #332f21;
 }
 
+.go-to {
+    display: flex;
+    justify-content: space-between;
+}
+
 .notice-comment {
     display: flex;
     justify-content: space-between;

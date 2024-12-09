@@ -10,13 +10,16 @@
 <body>
     <div id="container">
         <div class="history-title">
-            <a href="/logout">메인으로</a>
+            <div class="go-to">
+                <a href="/logout">메인으로</a>
+                <a href="/admin/product-mgmt" th:if="${session.admin == 'y'}">관리자 페이지</a>
+            </div>
             <h1>주문 내역</h1>
             <div class="notice-comment">
                 <span>각 내역을 누르면 수정 가능합니다.</span>
                 <div>
-                    <span>입금계좌 : 농협 302-0627-2628-61 정재하</span>&nbsp;&nbsp;
-                    <span class="inquiry-number">문의 전화번호 : 010-4532-4350</span>
+                    <span th:text="@{'입금계좌 : ' + ${sellerInfo.sellerAccountBank} + ' ' + ${sellerInfo.sellerAccountNumber} + ' ' + ${sellerInfo.sellerAccountOwner}}"></span>&nbsp;&nbsp;
+                    <span class="inquiry-number" th:text="@{'문의 전화번호 : ' + ${sellerInfo.sellerPhone}}"></span>
                 </div>
             </div>
         </div>

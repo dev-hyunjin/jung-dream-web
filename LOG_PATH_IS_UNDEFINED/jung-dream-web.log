@@ -1,5 +1,0 @@
-INFO  24-12-08 17:08:13[File Watcher] [LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener:211] - Restarting due to 43 class path changes (0 additions, 0 deletions, 43 modifications)
-INFO  24-12-08 17:08:13[Thread-8] [Http11NioProtocol:173] - Pausing ProtocolHandler ["http-nio-80"]
-INFO  24-12-08 17:08:13[Thread-8] [StandardService:173] - Stopping service [Tomcat]
-INFO  24-12-08 17:08:13[Thread-8] [Http11NioProtocol:173] - Stopping ProtocolHandler ["http-nio-80"]
-INFO  24-12-08 17:08:13[Thread-8] [Http11NioProtocol:173] - Destroying ProtocolHandler ["http-nio-80"]

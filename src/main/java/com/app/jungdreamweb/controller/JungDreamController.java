@@ -1,8 +1,11 @@
 package com.app.jungdreamweb.controller;
 
+import com.app.jungdreamweb.dto.FileDTO;
 import com.app.jungdreamweb.dto.OrderDTO;
 import com.app.jungdreamweb.dto.ProductInfoDTO;
+import com.app.jungdreamweb.dto.SellerDTO;
 import com.app.jungdreamweb.excel.ExcelXlsxView;
+import com.app.jungdreamweb.service.AdminService;
 import com.app.jungdreamweb.service.JungDreamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +33,7 @@ import java.util.Map;
 public class JungDreamController {
 
     private final JungDreamService jungDreamService;
+    private final AdminService adminService;
 
     @Value("${admin.id}")
     private String adminId;
@@ -44,24 +48,32 @@ public class JungDreamController {
     private boolean isEunjin;
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        FileDTO fileInfo = adminService.getFile();
+
+        model.addAttribute("fileInfo", fileInfo);
+
         return "index";
     }
 
     @GetMapping("/order")
     public String order(Model model) {
         List<ProductInfoDTO> productInfoKinds = jungDreamService.getProductInfo(1, null, null, null);
+        FileDTO fileInfo = adminService.getFile();
 
         model.addAttribute("productInfoKinds", productInfoKinds);
+        model.addAttribute("fileInfo", fileInfo);
 
         return "order/order";
     }
 
     @PostMapping("/order-complete")
     public String orderComplete(Integer totalPrice, Model model) {
-
         String formatPrice = NumberFormat.getNumberInstance(Locale.US).format(totalPrice);
+        SellerDTO sellerInfo = adminService.getSeller();
+
         model.addAttribute("totalPrice", formatPrice);
+        model.addAttribute("sellerInfo", sellerInfo);
 
         return "order/order-complete";
     }
@@ -130,10 +142,12 @@ public class JungDreamController {
         List<OrderDTO> orderList = jungDreamService.getOrderList(startDate, endDate, orderPassword, ordererName, ordererPhone, orderEunjin);
         int orderCount = jungDreamService.getOrderCount(startDate, endDate, orderPassword, ordererName, ordererPhone, orderEunjin);
         List<ProductInfoDTO> productInfoKinds = jungDreamService.getProductInfo(1, null, null, null);
+        SellerDTO sellerInfo = adminService.getSeller();
 
         model.addAttribute("orderList", orderList);
         model.addAttribute("orderCount", orderCount);
         model.addAttribute("productInfoKinds", productInfoKinds);
+        model.addAttribute("sellerInfo", sellerInfo);
 
         return "history/order-history";
     }

@@ -11,8 +11,7 @@
         <h2 class="comment">
             <img src="/image/logo.png" alt="정드림 로고">반갑습니다!<img src="/image/logo.png" alt="정드림 로고">
         </h2>
-<!--        <h2 class="comment">정드림 사과농원입니다.</h2>-->
-        <img src="/image/홍보전단(골드,후지)001.png" alt="설명 이미지" class="explain-image">
+        <img th:src="@{'/files/display?filePath=' + ${fileInfo.filePath}}" alt="설명 이미지" class="explain-image">
         <div class="btn-area">
             <a href="/order" class="order-btn">주문하기</a>
             <a href="/login" class="history-btn">내역보기</a>

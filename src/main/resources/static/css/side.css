@@ -17,6 +17,19 @@ body {
     font-family: cafe24air;
 }
 
+.logout-area {
+    text-align: center;
+    padding: 15px;
+    color: white;
+    font-weight: bold;
+    border-bottom: 1px solid white;
+    cursor: pointer;
+}
+
+.logout-area:hover {
+    background-color: #336699;
+}
+
 .content {
     margin-top: 100px;
     display: flex;
@@ -34,6 +47,10 @@ body {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.content li:hover {
+    background-color: #336699;
 }
 
 .content a {

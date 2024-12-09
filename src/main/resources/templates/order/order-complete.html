@@ -14,8 +14,8 @@
         </h4>
         <div class="pay-information">
             <h2><span>총 금액 : </span><span th:text="${totalPrice} + '원'"></span></h2>
-            <h3><span>입금계좌 : 농협 302-0627-2628-61 정재하</span></h3>
-            <h4><span>문의 전화번호 : 010-4532-4350</span></h4>
+            <h3><span th:text="@{'입금계좌 : ' + ${sellerInfo.sellerAccountBank} + ' ' + ${sellerInfo.sellerAccountNumber} + ' ' + ${sellerInfo.sellerAccountOwner}}"></span></h3>
+            <h4><span th:text="@{'문의 전화번호 : ' + ${sellerInfo.sellerPhone}}"></span></h4>
             <div class="please-comment">
                 <span>입금 부탁드립니다. 감사합니다.</span>
             </div>

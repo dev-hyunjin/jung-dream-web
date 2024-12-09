@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +9,11 @@
 <body>
     <div class="container">
         <header>
-            <h1>정드림 </h1>
+            <h1>정드림</h1>
         </header>
         <div class="signup-form">
             <h2>주문하기</h2>
-            <img src="/image/홍보전단(골드,후지)001.png" alt="설명 이미지" class="explain-image">
+            <img th:src="@{'/files/display?filePath=' + ${fileInfo.filePath}}" alt="설명 이미지" class="explain-image">
             <div class="order-information-container">
                 <div class="form-group">
                     <label>주문자 이름</label>
