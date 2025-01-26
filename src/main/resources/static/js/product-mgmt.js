@@ -92,13 +92,11 @@ $(function() {
             data: { productKind : $productKind, productWeight : $productWeight, productSize : $productSize },
             success: function(result) {
                 if(result) {
-                    let modifyModal = $('.modify-modal');
-
-                    modifyModal.find('input[name=productKind]').val(result.productKind);
-                    modifyModal.find('input[name=productWeight]').val(result.productWeight);
-                    modifyModal.find('input[name=productSize]').val(result.productSize);
-                    modifyModal.find('input[name=productPrice]').val(result.productPrice);
-                    modifyModal.find('select[name=productSoldOut]').val(result.productSoldOut);
+                    $('input[name=productKind]').val(result.productKind);
+                    $('input[name=productWeight]').val(result.productWeight);
+                    $('input[name=productSize]').val(result.productSize);
+                    $('input[name=productPrice]').val(result.productPrice);
+                    $('select[name=productSoldOut]').val(result.productSoldOut);
                 }
             },
             error: function(e) {
