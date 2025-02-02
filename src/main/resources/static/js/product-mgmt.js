@@ -142,7 +142,7 @@ $(function() {
             productWeight : $productWeight.val(),
             productSize : $productSize.val(),
             productPrice : $productPrice.val(),
-            productSoldOut : $productSoldOut
+            productSoldOut : $productSoldOut.val()
         };
 
         $.ajax({
