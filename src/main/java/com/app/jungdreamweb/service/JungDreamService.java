@@ -6,8 +6,13 @@ import com.app.jungdreamweb.excel.ExcelWriter;
 import com.app.jungdreamweb.mapper.JungDreamMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.*;
 
@@ -168,5 +173,92 @@ public class JungDreamService {
         }
 
         return ExcelWriter.createExcelData(headList, bodyList, fileName);
+    }
+
+    public List<OrderDTO> readExcelData(MultipartFile file) throws IOException {
+        List<OrderDTO> dataList = new ArrayList<>();
+
+        try (InputStream is = file.getInputStream();
+             Workbook workbook = new XSSFWorkbook(is)) {
+
+            Sheet sheet = workbook.getSheetAt(0); // 첫 번째 시트
+            Iterator<Row> rowIterator = sheet.iterator();
+
+            // 첫 번째 행(헤더) 건너뛰기
+            if (rowIterator.hasNext()) rowIterator.next();
+
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+
+                String deliveryName = getCellValue(row, 0);
+                String deliverPhone = getCellValue(row, 1);
+                String receiverName = getCellValue(row, 2);
+                String receiverPhone = getCellValue(row, 3);
+                String postCode = getCellValue(row, 4);
+                String address = getCellValue(row, 5);
+                String addressDetail = getCellValue(row, 6);
+                String kind = getCellValue(row, 7);
+                String size = getCellValue(row, 8);
+                String weight = getCellValue(row, 9);
+                String count = getCellValue(row, 10);
+
+                OrderDTO orderDTO = new OrderDTO();
+
+                orderDTO.setOrderDeliveryName(deliveryName);
+                orderDTO.setOrderDeliveryPhone(deliverPhone);
+                orderDTO.setOrderReceiverName(receiverName);
+                orderDTO.setOrderReceiverPhone(receiverPhone);
+                orderDTO.setOrderPostcode(postCode);
+                orderDTO.setOrderAddress(address);
+                orderDTO.setOrderAddressDetail(addressDetail);
+                orderDTO.setOrderKind(kind);
+                orderDTO.setOrderSize(size);
+                orderDTO.setOrderWeight(weight + "kg");
+                orderDTO.setOrderCount(Integer.parseInt(count));
+
+                dataList.add(orderDTO);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dataList;
+    }
+
+    private String getCellValue(Row row, int cellIndex) {
+        Cell cell = row.getCell(cellIndex);
+        if (cell == null) return ""; // 셀이 아예 없는 경우
+
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue().trim();
+            case NUMERIC:
+                // 정수/소수 구분 필요 시 여기서 조정 가능
+                double numericValue = cell.getNumericCellValue();
+                if (numericValue == Math.floor(numericValue)) {
+                    return String.valueOf((long) numericValue); // 정수로 변환
+                } else {
+                    return String.valueOf(numericValue); // 소수점 그대로
+                }
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            case BLANK:
+                return "";
+            default:
+                return "";
+        }
+    }
+
+    private int parseIntValue(Cell cell) {
+        if (cell == null) return 0;
+        if (cell.getCellType() == CellType.NUMERIC) {
+            return (int) cell.getNumericCellValue();
+        } else {
+            try {
+                return Integer.parseInt(cell.getStringCellValue());
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
     }
 }

@@ -38,6 +38,9 @@ dependencies {
 	implementation group: 'org.apache.poi', name: 'poi', version: '5.2.3'			// HSSFWorkbook 사용가능(xls)
 	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'		// XSSFWorkbook 사용가능(xlsx)
 	implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+
+	// application.properties 파일에서 디비정보 암호화 하기 위해 사용
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5' // 최신 버전으로 업데이트 가능
 }
 
 tasks.named('test') {

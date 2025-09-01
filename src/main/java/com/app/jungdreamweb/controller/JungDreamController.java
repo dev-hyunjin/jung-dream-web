@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.NumberFormat;
 import java.time.LocalDate;
@@ -65,6 +63,19 @@ public class JungDreamController {
         model.addAttribute("fileInfo", fileInfo);
 
         return "order/order";
+    }
+
+    @GetMapping("/large-order")
+    public String largeOrder(Model model) {
+        List<ProductInfoDTO> productInfoKinds = jungDreamService.getProductInfo(1, null, null, null);
+        FileDTO fileInfo = adminService.getFile();
+        SellerDTO sellerInfo = adminService.getSeller();
+
+        model.addAttribute("productInfoKinds", productInfoKinds);
+        model.addAttribute("fileInfo", fileInfo);
+        model.addAttribute("sellerInfo", sellerInfo);
+
+        return "order/large-order";
     }
 
     @PostMapping("/order-complete")
@@ -160,8 +171,8 @@ public class JungDreamController {
     }
 
     @GetMapping("/excel")
-    public ModelAndView excelDownload(String startDate, String endDate, HttpSession session) throws Exception  {
-        Map<String, Object> excelData = new HashMap<String, Object>();
+    public ModelAndView excelDownload(String startDate, String endDate, HttpSession session)  {
+        Map<String, Object> excelData = new HashMap<>();
         try {
             if(startDate.equals("")) {
                 startDate = String.valueOf(LocalDate.now());

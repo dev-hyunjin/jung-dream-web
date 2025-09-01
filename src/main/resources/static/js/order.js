@@ -434,6 +434,10 @@ $(function() {
                     alert('품종을 골라주세요');
                     $('select[name=kind]').eq(i).focus();
                     return;
+                } else if($('select[name=kind]').eq(i).val() == 'Y' || $('select[name=kind]').eq(i).val() == 'P') {
+                    alert('선택할 수 없는 품종입니다.');
+                    $('select[name=kind]').eq(i).focus();
+                    return;
                 }
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
@@ -448,6 +452,10 @@ $(function() {
                     alert('키로수를 골라주세요');
                     $('select[name=weight]').eq(i).focus();
                     return;
+                } else if($('select[name=weight]').eq(i).val() == 'Y' || $('select[name=weight]').eq(i).val() == 'P') {
+                    alert('선택할 수 없는 키로수입니다.');
+                    $('select[name=weight]').eq(i).focus();
+                    return;
                 }
                 if (!orderDTOS[i]) {
                     orderDTOS[i] = {};
@@ -460,6 +468,10 @@ $(function() {
             for (let i = 0; i < $('select[name=size]').length; i++) {
                 if(!$('select[name=size]').eq(i).val()) {
                     alert('규격을 골라주세요');
+                    $('select[name=size]').eq(i).focus();
+                    return;
+                } else if($('select[name=size]').eq(i).val() == 'Y' || $('select[name=size]').eq(i).val() == 'P') {
+                    alert('선택할 수 없는 규격입니다.');
                     $('select[name=size]').eq(i).focus();
                     return;
                 }

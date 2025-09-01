@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문하기</title>
+    <link rel="stylesheet" href="/css/large-order.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>정드림</h1>
+        </header>
+        <div class="signup-form">
+            <h2>주문하기</h2>
+            <img th:src="@{'/files/display?filePath=' + ${fileInfo.filePath}}" alt="설명 이미지" class="explain-image">
+            <div>
+                <div>대량 주문은 <span style="font-weight: bold; color: #1a6418">양식 다운로드</span>를 하신 뒤, 엑셀 파일에 주문 내용을 적은 후 엑셀 파일을 업로드 하면 자동으로 주문이 추가됩니다.</div>
+                <div>추가된 내용 확인 후 <span style="font-weight: bold; color: #f47677">제출하기</span> 버튼을 누르면 주문이 완료됩니다.</div>
+                <br>
+                <div>보내는 사람, 전화번호 : 보내는 사람을 변경하고 싶으실 시, 정보를 변경해주시고, 아니라면 <span th:text="${sellerInfo.sellerName}"/>, <span th:text="${sellerInfo.sellerPhone}"/> 번호로 입력하시면 됩니다.</div>
+                <div>받는 사람, 전화번호 : 수령할 사람의 이름, 전화번호로 적으시면 됩니다.</div>
+                <div>우편번호 : 우편번호를 적어주시면 됩니다.</div>
+                <div>주소 : 주소를 적어주시면 됩니다.</div>
+                <div>상세주소 : 동, 호수 등 상세 주소를 적어주시면 됩니다.</div>
+                <div>품종 : 현재 판매중인 품종을 <span class="important">정확히</span> 적어주시면 됩니다. (홍로, 부사, 시나노골드 등)</div>
+                <div>규격 : 주문하시고 싶은 사과의 호수를 <span class="important">단위 없이</span> 적어주시면 됩니다.(1번과 주문시 1, 특 주문시 특)</div>
+                <div>키로수 : 5, 10키로 중 주문하시고 싶은 사과의 키로수를 <span class="important">단위 없이</span> 적어주시면 됩니다.(5kg 주문시 5, 10kg 주문시 10)</div>
+                <div>수량 : 주문하시고 싶은 사과의 수량을 <span class="important">단위 없이</span> 적어주시면 됩니다.(1박스 주문시 1, 5박스 주문시 5)</div>
+                <div>표를 추가하시면 추가하시는 줄 개수대로 주문이 늘어나게 됩니다. 정확하게 확인 후 등록해주시기 바랍니다.</div>
+            </div>
+            <div>
+                <button type="button" class="form-download-btn">양식 다운로드</button>
+                <div class="order-information-container">
+                    <div class="form-group">
+                        <label>주문자 이름</label>
+                        <input type="text" name="ordererName" placeholder="이름을 입력해주세요" maxlength="5">
+                        <span class="error-message">이름을 입력해주세요</span>
+                    </div>
+                    <div class="form-group">
+                        <label>주문자 전화번호</label>
+                        <input type="text" name="ordererPhone" placeholder="전화번호를 입력해주세요" maxlength="13">
+                        <span class="error-message">전화번호를 입력해주세요</span>
+                    </div>
+                    <div class="form-group">
+                        <label>비밀번호(주문 확인용)</label>
+                        <input type="password" name="orderPassword" placeholder="비밀번호(숫자6자리)를 입력해주세요" maxlength="6">
+                        <span class="error-message">비밀번호(숫자6자리)를 입력해주세요</span>
+                    </div>
+                </div>
+                <button type="button" class="form-upload-btn">
+                    <span>주문 업로드</span>
+                </button>
+                <input type="file" name="formUploadFile" style="display: none">
+                <div class="form-group">
+                    <h3>주문 총 <span class="total-count">0</span>건</h3>
+                    <!-- <span>총 가격 : <span>180000</span> 원</span> -->
+                </div>
+                <input type="checkbox" name="personalInformation" id="personal-information"><span>개인정보 제공에 동의합니다</span>
+                <button type="button" class="submit-button">제출하기</button>
+            </div>
+            <div class="receive-informations">
+                <!-- 주문 반복 시작 -->
+<!--                <div class="receive-information-container">-->
+<!--                    <div class="order-plus-minus">-->
+<!--                        <span>주문</span>-->
+<!--                        <div class="img-container">-->
+<!--                            <span>주문자 정보와 동일</span><input type="checkbox" name="samePerson" id="same-person">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="delivery-button-container">-->
+<!--                        <span><input type="checkbox" class="delivery-button" />(선택사항)보내는사람</span>-->
+<!--                    </div>-->
+<!--                    <div class="delivery-container"></div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label>받는사람 이름</label>-->
+<!--                        <input type="text" name="receiverName" placeholder="이름을 입력해주세요" maxlength="5">-->
+<!--                        <span class="error-message">이름을 입력해주세요</span>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label>받는사람 전화번호</label>-->
+<!--                        <input type="text" name="receiverPhone" placeholder="전화번호를 입력해주세요" maxlength="13">-->
+<!--                        <span class="error-message">전화번호를 입력해주세요</span>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label>주소</label>-->
+<!--                        <input type="text" name="postcode" class="postcode" placeholder="우편번호" readonly>-->
+<!--                        <div class="address-container">-->
+<!--                            <input type="text" name="address" placeholder="주소를 찾아주세요" readOnly/>-->
+<!--                            <button type="button" class="find-address">찾기</button>-->
+<!--                        </div>-->
+<!--                        <input type="text" name="addressDetail" placeholder="상세주소 입력"/>-->
+<!--                        <span class="error-message">주소를 찾은 후 상세주소를 입력해주세요</span>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label>사과 품종</label>-->
+<!--                        <select name="kind" id="kind">-->
+<!--                            <option value="">품종을 골라주세요</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label>사과 kg</label>-->
+<!--                        <select name="weight" id="weight">-->
+<!--                            <option value="">kg을 골라주세요</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label>사과 규격</label>-->
+<!--                        <select name="size" id="size">-->
+<!--                            <option value="">규격을 골라주세요</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label>사과 수량</label>-->
+<!--                        <div class="count-wrap _count">-->
+<!--                            <button type="button" class="minus">-</button>-->
+<!--                            <input type="text" name="amount" class="input" value="1" />-->
+<!--                            <button type="button" class="plus">+</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="img-container">-->
+<!--&lt;!&ndash;                        <img src="/image/plus.png" class="plus-img" alt="">&ndash;&gt;-->
+<!--                        <span class="plus-img">주문추가</span>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <!-- 주문 반복 끝 -->
+            </div>
+
+        </div>
+    </div>
+</body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
+<script src="/js/plugins/jquery-3.6.0.min.js"></script>
+<script th:inline="javascript">
+    let productInfoKinds = [[${productInfoKinds}]];
+</script>
+<script src="/js/order.js"></script>
+<script src="/js/large-order.js"></script>
+</html>
