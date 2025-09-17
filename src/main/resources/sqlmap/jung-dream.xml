@@ -74,7 +74,7 @@
                 product_weight desc
             </when>
             <when test='isFirst == 3'>
-                case when product_size like '특%' then 0 else 1 end
+                substring(product_size, 1, 1) asc
             </when>
             <otherwise>
                 product_kind asc, product_weight desc, product_price desc

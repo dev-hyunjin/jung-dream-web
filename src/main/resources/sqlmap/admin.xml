@@ -34,6 +34,15 @@
         from tbl_seller
     </select>
 
+    <select id="selectNotice" resultType="noticeDTO">
+        select notice_start_date, notice_end_date, notice_text, notice_type
+        from tbl_notice
+        where 1=1
+        <if test='today != null and today != ""'>
+            and notice_start_date <![CDATA[<=]]> #{today}::date and notice_end_date >= #{today}::date
+        </if>
+    </select>
+
     <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INSERT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
     <insert id="insertProductInfo" parameterType="productInfoDTO">
         insert into tbl_product_info(product_kind, product_weight, product_size, product_price, product_sold_out)
@@ -59,6 +68,14 @@
             seller_account_bank = #{sellerAccountBank},
             seller_account_number = #{sellerAccountNumber},
             seller_account_owner = #{sellerAccountOwner}
+    </update>
+
+    <update id="updateNotice" parameterType="noticeDTO">
+        update tbl_notice
+        set notice_start_date = #{noticeStartDate}::date,
+            notice_end_date = #{noticeEndDate}::date,
+            notice_type = #{noticeType},
+            notice_text = #{noticeText}
     </update>
 
     <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  DELETE  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->

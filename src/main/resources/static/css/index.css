@@ -42,6 +42,10 @@ a {
     width: 35px;
 }
 
+.notice {
+    color: red;
+}
+
 .explain-image {
     width: 100%;
     margin-bottom: 30px;

@@ -1,15 +1,17 @@
 package com.app.jungdreamweb.controller;
 
-import com.app.jungdreamweb.dto.FileDTO;
-import com.app.jungdreamweb.dto.OrderDTO;
-import com.app.jungdreamweb.dto.ProductInfoDTO;
-import com.app.jungdreamweb.dto.SellerDTO;
+import com.app.jungdreamweb.dto.*;
 import com.app.jungdreamweb.excel.ExcelXlsxView;
 import com.app.jungdreamweb.service.AdminService;
 import com.app.jungdreamweb.service.JungDreamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +20,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -45,11 +51,16 @@ public class JungDreamController {
     @Value("${is.eunjin}")
     private boolean isEunjin;
 
+    @Value("${order.form.path}")
+    private String orderFormPath;
+
     @GetMapping("/")
     public String index(Model model) {
         FileDTO fileInfo = adminService.getFile();
+        NoticeDTO notice = adminService.getNotice(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
         model.addAttribute("fileInfo", fileInfo);
+        model.addAttribute("noticeDTO", notice);
 
         return "index";
     }
@@ -200,5 +211,47 @@ public class JungDreamController {
             e.printStackTrace();
         }
         return new ModelAndView(new ExcelXlsxView(), excelData);
+    }
+
+    /**
+     * 주문 양식 엑셀 다운로드
+     */
+    @GetMapping("/excel-order-form-download")
+    public ResponseEntity<Resource> excelOrderFormDownload() {
+        try {
+            orderFormPath = new String(orderFormPath.getBytes("ISO-8859-1"), StandardCharsets.UTF_8);
+
+            // 주문 양식 파일 경로 지정
+            File file = new File(orderFormPath);
+
+            if (!file.exists() || !file.isFile()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // 파일명 인코딩
+            String encoded = URLEncoder.encode("주문_양식.xlsx", StandardCharsets.UTF_8)
+                    .replaceAll("\\+", "%20");
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encoded);
+            headers.add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
+            headers.add(HttpHeaders.PRAGMA, "no-cache");
+            headers.add(HttpHeaders.EXPIRES, "0");
+
+            // 큰 파일/스트림 안전하게
+            Resource resource = new org.springframework.core.io.InputStreamResource(
+                    new java.io.FileInputStream(file)
+            );
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(file.length())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }

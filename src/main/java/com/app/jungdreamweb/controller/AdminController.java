@@ -1,6 +1,7 @@
 package com.app.jungdreamweb.controller;
 
 import com.app.jungdreamweb.dto.FileDTO;
+import com.app.jungdreamweb.dto.NoticeDTO;
 import com.app.jungdreamweb.dto.ProductInfoDTO;
 import com.app.jungdreamweb.dto.SellerDTO;
 import com.app.jungdreamweb.service.AdminService;
@@ -30,6 +31,22 @@ public class AdminController {
         model.addAttribute("productInfoList", productInfoList);
 
         return "admin/product-mgmt";
+    }
+
+    @GetMapping("notice-mgmt")
+    public String noticeMgmt(Model model) {
+        NoticeDTO notice = adminService.getNotice(null);
+
+        model.addAttribute("noticeDTO", notice);
+
+        return "admin/notice-mgmt";
+    }
+
+    @PostMapping("notice-update")
+    public RedirectView noticeUpdate(NoticeDTO noticeDTO) {
+        adminService.updateNotice(noticeDTO);
+
+        return new RedirectView("/admin/notice-mgmt");
     }
 
     @GetMapping("image-mgmt")

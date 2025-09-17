@@ -1,10 +1,12 @@
 package com.app.jungdreamweb.mapper;
 
 import com.app.jungdreamweb.dto.FileDTO;
+import com.app.jungdreamweb.dto.NoticeDTO;
 import com.app.jungdreamweb.dto.ProductInfoDTO;
 import com.app.jungdreamweb.dto.SellerDTO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Mapper
@@ -18,6 +20,8 @@ public interface AdminMapper {
 
     public SellerDTO selectSeller();
 
+    public NoticeDTO selectNotice(String today);
+
     public void insertProductInfo(ProductInfoDTO productInfoDTO);
 
     public void insertFile(FileDTO fileDTO);
@@ -25,6 +29,8 @@ public interface AdminMapper {
     public void updateProductInfo(ProductInfoDTO productInfoDTO);
 
     public void updateSeller(SellerDTO sellerDTO);
+
+    public void updateNotice(NoticeDTO noticeDTO);
 
     public void deleteProductInfo(String productKind, String productWeight, String productSize);
 

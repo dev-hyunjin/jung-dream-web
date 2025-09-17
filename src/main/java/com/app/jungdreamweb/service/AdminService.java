@@ -1,6 +1,7 @@
 package com.app.jungdreamweb.service;
 
 import com.app.jungdreamweb.dto.FileDTO;
+import com.app.jungdreamweb.dto.NoticeDTO;
 import com.app.jungdreamweb.dto.ProductInfoDTO;
 import com.app.jungdreamweb.dto.SellerDTO;
 import com.app.jungdreamweb.mapper.AdminMapper;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -33,6 +35,10 @@ public class AdminService {
         return adminMapper.selectSeller();
     }
 
+    public NoticeDTO getNotice(String today) {
+        return adminMapper.selectNotice(today);
+    }
+
     public void insertProductInfo(ProductInfoDTO productInfoDTO) {
         adminMapper.insertProductInfo(productInfoDTO);
     }
@@ -48,6 +54,10 @@ public class AdminService {
 
     public void updateSeller(SellerDTO sellerDTO) {
         adminMapper.updateSeller(sellerDTO);
+    }
+
+    public void updateNotice(NoticeDTO noticeDTO) {
+        adminMapper.updateNotice(noticeDTO);
     }
 
     public void deleteProductInfo(String productKind, String productWeight, String productSize) {

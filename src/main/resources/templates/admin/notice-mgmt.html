@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/side.css">
+    <link rel="stylesheet" href="/css/product-mgmt.css">
+    <link rel="stylesheet" href="/css/product-mgmt-modal.css">
+    <title>상품관리</title>
+    <script src="/js/plugins/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+    .text-input textarea {
+        width: 400px;
+        height: 100px;
+        resize: none;
+    }
+</style>
+<body>
+    <div class="main">
+
+        <!-- side.html 추가하기 -->
+        <div class="side"  th:replace="admin/side :: side"></div>
+
+        <!-- 메인 시작 -->
+        <div class="main-box">
+            <!-- 페이지 제목 -->
+            <div class="title">
+                <h2>공지 관리</h2>
+            </div>
+            <!-- 페이지 제목 끝 -->
+
+            <!-- 사원 관리 시작 -->
+            <div class="st-list">
+                <!-- 사원 리스트 시작 -->
+                <div class="list-main-box" style="padding: 225px 0; text-align: left;">
+                    <form th:action="@{/admin/notice-update}" method="post" name="noticeForm" th:object="${noticeDTO}">
+                        <div class="modal-major-content">
+                            <div class="text">
+                                <span class="user-text">시작날짜</span>
+                                <span class="user-text">종료날짜</span>
+                                <span class="user-text">타입</span>
+                                <span class="user-text notice-content">공지내용</span>
+                            </div>
+                            <div class="text-input">
+                                <input type="date" class="user-input" th:field="*{noticeStartDate}">
+                                <input type="date" class="user-input" th:field="*{noticeEndDate}">
+                                <select type="text" class="user-input" th:field="*{noticeType}">
+                                    <option value="V">휴가</option>
+                                    <option value="N">공지</option>
+                                </select>
+                                <textarea type="text" class="user-input" th:field="*{noticeText}"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-button">
+                            <button type="submit" class="modal-btn" id="join-btn">수정</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/js/plugins/jquery-3.6.0.min.js"></script>
+<script th:inline="javascript">
+    let notice = [[${noticeDTO}]];
+</script>
+<script>
+    if(notice.noticeType == 'V') {
+        $('textarea[name=noticeText]').text('');
+        $('textarea[name=noticeText]').hide();
+        $('.notice-content').hide();
+    }
+
+    $('select[name=noticeType]').on('change', function() {
+        if($(this).val() == 'V') {
+            $('textarea[name=noticeText]').text('');
+            $('textarea[name=noticeText]').hide();
+            $('.notice-content').hide();
+        } else if($(this).val() == 'N') {
+            $('textarea[name=noticeText]').show();
+            $('.notice-content').show();
+        }
+    });
+</script>
+</html>

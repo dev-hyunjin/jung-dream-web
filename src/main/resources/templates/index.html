@@ -10,6 +10,14 @@
     <div class="container">
         <h2 class="comment">
             <img src="/image/logo.png" alt="정드림 로고">반갑습니다!<img src="/image/logo.png" alt="정드림 로고">
+            <div class="notice" th:if="${noticeDTO != null}">
+                <div th:if="${noticeDTO.noticeType == 'V'}">
+                    죄송합니다.<br><span th:text="${noticeDTO.noticeStartDate}"/> 부터 <span th:text="${noticeDTO.noticeEndDate}"/>까지<br>개인일정으로 주문을 받지 못하게 되었습니다.
+                </div>
+                <div th:if="${noticeDTO.noticeType == 'N'}">
+                    <span style="white-space: pre-line;" th:text="${noticeDTO.noticeText}"/>
+                </div>
+            </div>
         </h2>
         <img th:src="@{'/files/display?filePath=' + ${fileInfo.filePath}}" alt="설명 이미지" class="explain-image">
         <div class="btn-area">
@@ -19,4 +27,19 @@
         </div>
     </div>
 </body>
+<script src="/js/plugins/jquery-3.6.0.min.js"></script>
+<script th:inline="javascript">
+    let notice = [[${noticeDTO}]];
+</script>
+<script>
+    if(notice != null && notice.noticeType == 'V') {
+        $('.order-btn, .large-order-btn').on('click', function(e) {
+            e.preventDefault();
+
+            if(confirm("현재 주문 시 " + notice.noticeEndDate + " 이후 배송이 시작됩니다. 주문하시겠습니까?")) {
+                location.href = $(this).attr('href');
+            }
+        });
+    }
+</script>
 </html>
